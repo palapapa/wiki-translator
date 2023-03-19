@@ -1,4 +1,10 @@
-Push-Location $dir
-npm install
-npm run watch
-Pop-Location
+try
+{
+    Push-Location $PSScriptRoot
+    npm install
+    npm run watch
+}
+finally
+{
+    Pop-Location
+}
