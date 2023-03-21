@@ -1,0 +1,4 @@
+// This file is a dummy tsconfig for VSCode because it doesn't provide a way to specify which tsconfig file to use. Edit config/tsconfig instead of this one.
+{
+    "extends": "./config/tsconfig.json"
+}
