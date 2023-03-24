@@ -11,6 +11,7 @@
         "@types/chrome": "^0.0.181",
         "@typescript-eslint/eslint-plugin": "^5.56.0",
         "@typescript-eslint/parser": "^5.56.0",
+        "chrome-types": "^0.1.179",
         "copy-webpack-plugin": "^10.2.4",
         "css-loader": "^6.7.3",
         "eslint": "^8.36.0",
@@ -27,19 +28,21 @@
         "webpack-merge": "^5.8.0"
     },
     "type": "module",
-    "eslintConfig": 
-    {
-        "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+    "eslintConfig": {
+        "extends": [
+            "eslint:recommended",
+            "plugin:@typescript-eslint/recommended"
+        ],
         "parser": "@typescript-eslint/parser",
-        "plugins": ["@typescript-eslint"],
+        "plugins": [
+            "@typescript-eslint"
+        ],
         "root": true,
-        "parserOptions":
-        {
+        "parserOptions": {
             "project": "./config/tsconfig.json",
             "tsconfigRootDir": "."
         },
-        "rules":
-        {
+        "rules": {
             "no-unexpected-multiline": "off"
         }
     }
