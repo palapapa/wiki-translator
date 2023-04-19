@@ -3,8 +3,18 @@
     "name": "Wiki Translator",
     "description": "A Chrome extension that automatically detects the longest language of a Wikipedia atricle and translates it.",
     "version": "0.1.0",
-    "action": {
+    "action":
+    {
         "default_title": "Wiki Translator",
         "default_popup": "html/popup.html"
+    },
+    "permissions":
+    [
+        "activeTab"
+    ],
+    "background":
+    {
+        "service_worker": "dist/background.js",
+        "type": "module"
     }
 }

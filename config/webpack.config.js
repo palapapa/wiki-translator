@@ -29,5 +29,6 @@ export default
     output:
     {
         filename: "[name]"
-    }
+    },
+    devtool: "source-map"
 };
