@@ -79,14 +79,14 @@ p {
 }
 
 .dropButton:active .languageIcon {
-    background-image: url(../images/language_active.svg);
+    background-image: url(../images/languageActive.svg);
 }
 
-/* arrow-down.svg */
+/* arrowDown.svg */
 .arrowDownIcon {
     align-self: center;
     margin-left: auto;
-    background-image: url(../images/arrow-down.svg);
+    background-image: url(../images/arrowDown.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 15px;
@@ -94,7 +94,7 @@ p {
 }
 
 .dropButton:active .arrowDownIcon {
-    background-image: url(../images/arrow-down_active.svg);
+    background-image: url(../images/arrowDownActive.svg);
 }
 
 #targetLanguageButton {
@@ -201,7 +201,7 @@ p {
 }
 
 .topThreeItem:active .linkIcon {
-    background-image: url(../images/link_active.svg);
+    background-image: url(../images/linkActive.svg);
 }
 
 .button {
