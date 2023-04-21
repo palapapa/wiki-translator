@@ -12,7 +12,7 @@ export default
         (
             path.resolve
             (
-                __dirname, "../src/**/*.ts"
+                __dirname, "../dist/**/*.js"
             ).replaceAll("\\", "/") // path.resolve returns Windows path. It is converted to POSIX path here.
         ).map
         (
@@ -21,9 +21,9 @@ export default
         (
             (p) =>
             {
-                let filename = p.split("src/")[1];
-                return [filename.substring(0, filename.lastIndexOf(".")) + ".js", p];
-            } 
+                let filename = p.split("dist/")[1];
+                return [filename, p];
+            }
         )
     ),
     output:
