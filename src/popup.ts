@@ -7,11 +7,11 @@ function dropmenuShow(): void {
 
 // Close the dropdown if the user clicks outside of it
 window.onclick = function (event: MouseEvent): void {
-    if (!(event.target as HTMLElement).matches('.coverDropButton')) {
+    if (event.target instanceof Element && !(event.target as Element).matches('.coverDropButton')) {
         const dropdowns = document.getElementsByClassName("dropdownContent");
         for (let i = 0; i < dropdowns.length; i++) {
-            const openDropdown = dropdowns[i] as HTMLElement;
-            if (openDropdown.classList.contains('show')) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown !== undefined && openDropdown.classList.contains('show')) {
                 openDropdown.classList.remove('show');
             }
         }
