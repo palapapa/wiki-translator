@@ -3,13 +3,11 @@
     "version": "0.1.0",
     "description": "A Chrome extension that automatically detects the longest language of a Wikipedia atricle and translates it.",
     "private": true,
-    "scripts":
-    {
+    "scripts": {
         "watch": "tsc-watch --project config/tsconfig.json --onSuccess \"webpack --mode=development --config config/webpack.config.js\"",
         "build": "tsc --project config/tsconfig.json; webpack --mode=production --config config/webpack.config.js"
     },
-    "devDependencies":
-    {
+    "devDependencies": {
         "@types/chrome": "^0.0.181",
         "@typescript-eslint/eslint-plugin": "^5.56.0",
         "@typescript-eslint/parser": "^5.56.0",
@@ -22,36 +20,34 @@
         "mini-css-extract-plugin": "^2.7.5",
         "path": "^0.12.7",
         "prettier": "^2.8.4",
-        "ts-loader": "^9.2.8",
+        "ts-loader": "^9.4.2",
         "tsc-watch": "^6.0.0",
         "typescript": "^4.9.5",
-        "webpack": "^5.76.2",
+        "webpack": "^5.80.0",
         "webpack-cli": "^5.0.1",
         "webpack-merge": "^5.8.0"
     },
     "type": "module",
-    "eslintConfig":
-    {
-        "extends":
-        [
+    "eslintConfig": {
+        "extends": [
             "eslint:recommended",
             "plugin:@typescript-eslint/recommended"
         ],
         "parser": "@typescript-eslint/parser",
-        "plugins":
-        [
+        "plugins": [
             "@typescript-eslint"
         ],
         "root": true,
-        "parserOptions":
-        {
+        "parserOptions": {
             "project": "./config/tsconfig.json",
             "tsconfigRootDir": "."
         },
-        "rules":
-        {
+        "rules": {
             "no-unexpected-multiline": "off"
         },
-        "ignorePatterns": ["*", "!src"]
+        "ignorePatterns": [
+            "*",
+            "!src"
+        ]
     }
 }

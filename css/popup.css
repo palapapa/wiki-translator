@@ -1,5 +1,273 @@
-body
-{
+@font-face {
+    font-family: 'LinLibertine_R';
+    src: url('../css/fonts/LinLibertine_R.woff') format("woff"), url('../css/fonts/LinLibertine_R.ttf') format("truetype"), url('../css/fonts/LinLibertine_R.eot') format("embedded-opentype");
+}
+
+body {
     min-width: 300px;
     min-height: 300px;
+    font-family: Arial;
+}
+
+p {
+    display: inline;
+}
+
+.banner {
+    width: 300px;
+    height: auto;
+    margin: 0;
+    margin-top: -10px;
+    margin-bottom: -20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: -5px;
+    padding-bottom: -5px;
+    font-size: 17px;
+    font-family: "LinLibertine_R";
+}
+
+.select {
+    width: 300px;
+    height: auto;
+    margin: 0px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.dropbtn {
+    position: relative;
+    display: flex;
+    height: auto;
+    background-color: white;
+    color: #3366cc;
+    padding: 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.dropbtn:hover {
+    background-color: #dae4fd;
+}
+
+.dropbtn:active {
+    background-color: #324a88;
+    color: white;
+}
+
+#cover_dropbtnn {
+    position: absolute;
+    /* 當元素的position設定absolute後，它就會往外層的元素找是否有position:relative | absolute | fixed | inherit(若繼承的是前面3個之一)的元素，若是都沒有，就會以該網頁頁面(<body>)的左上角為定位點。 */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 10, 0);
+    z-index: 100;
+    left: 0;
+    top: 0;
+}
+
+/* language.svg */
+#language-icon {
+    vertical-align: text-bottom;
+    background-image: url(../css/icon/language.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+}
+
+.dropbtn:active #language-icon {
+    background-image: url(../css/icon/language_active.svg);
+}
+
+/* arrow-down.svg */
+#arrow-down-icon {
+    align-self: center;
+    margin-left: auto;
+    background-image: url(../css/icon/arrow-down.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 15px;
+    height: 15px;
+}
+
+.dropbtn:active #arrow-down-icon {
+    background-image: url(../css/icon/arrow-down_active.svg);
+}
+
+#target-language-btn {
+    background-image: linear-gradient(#324a88, #324a88);
+    background-size: 0% 0.3em;
+    background-position-y: 100%;
+    background-position-x: 0%;
+    background-repeat: no-repeat;
+    transition: background-size 0.2s ease-in-out;
+}
+
+#target-language-btn:target {
+    /* box-shadow: 0 3px #324a88;
+    */
+    background-size: 100% 0.3em;
+}
+
+#auto {
+    border: 1px solid #3366cc;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fcfcfc;
+    width: 300px;
+    overflow: auto;
+    font-weight: bold;
+    text-indent: 15px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content span {
+    color: #3366cc;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content span:hover {
+    background-color: #ebeff6;
+}
+
+.show {
+    display: block;
+}
+
+.top-language {
+    width: 300px;
+    height: auto;
+    margin: 0px;
+    padding: 10px;
+    padding-top: 0px;
+    height: auto;
+    position: relative;
+}
+
+.top-three {
+    height: auto;
+    background-color: white;
+    color: #3366cc;
+    padding: 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.top-three_item {
+    display: flex;
+    height: auto;
+    background-color: white;
+    color: #3366cc;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    text-indent: 25px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.top-three_item:hover {
+    background-color: #dae4fd;
+}
+
+.top-three_item:active {
+    background-color: #324a88;
+    color: white;
+}
+
+/* link.svg */
+#link-icon {
+    vertical-align: text-bottom;
+    margin-left: auto;
+    background-image: url(../css/icon/link.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 15px;
+    height: 15px;
+}
+
+.top-three_item:active #link-icon {
+    background-image: url(../css/icon/link_active.svg);
+}
+
+.button {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: stretch;
+    height: auto;
+    background-color: white;
+    color: #3366cc;
+    text-align: left;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.button-items {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    width: 50%;
+    vertical-align: middle;
+    min-height: 30px;
+    background-color: #ebeff6;
+    color: #3366cc;
+    padding: 0px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    border-left: 2px solid white;
+    border-right: 2px solid white;
+}
+
+.button-items a {
+    color: inherit;
+    align-self: stretch;
+    text-decoration: none;
+}
+
+#detected-language-btn {
+    background-image: linear-gradient(#324a88, #324a88);
+    background-size: 0% 0.3em;
+    background-position-y: 100%;
+    background-position-x: 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.2s ease-in-out;
+}
+
+#detected-language-btn:target {
+    background-size: 100% 0.3em;
+}
+
+.button-items_sub {
+    display: flex;
+    align-items: stretch;
+    vertical-align: middle;
+    padding: 5px;
+    width: 100%;
+    height: auto;
+}
+
+.button-items_sub_2,
+.button-items_sub_2 p {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    text-align: center;
+    margin: 0px;
 }
