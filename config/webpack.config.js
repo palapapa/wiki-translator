@@ -5,28 +5,30 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default
-    {
-        entry: Object.fromEntries
+{
+    entry: Object.fromEntries
+    (
+        glob.sync
+        (
+            path.resolve
             (
-                glob.sync
-                    (
-                        path.resolve
-                            (
-                                __dirname, "../src/**/*.ts"
-                            ).replaceAll("\\", "/") // path.resolve returns Windows path. It is converted to POSIX path here.
-                    ).map
-                    (
-                        (p) => p.replaceAll("\\", "/") // Same for glob.sync
-                    ).map
-                    (
-                        (p) => {
-                            let filename = p.split("src/")[1];
-                            return [filename.substring(0, filename.lastIndexOf(".")) + ".js", p];
-                        }
-                    )
-            ),
-        output:
-        {
-            filename: "[name]"
-        }
-    };
+                __dirname, "../dist/**/*.js"
+            ).replaceAll("\\", "/") // path.resolve returns Windows path. It is converted to POSIX path here.
+        ).map
+        (
+            (p) => p.replaceAll("\\", "/") // Same for glob.sync
+        ).map
+        (
+            (p) =>
+            {
+                let filename = p.split("dist/")[1];
+                return [filename, p];
+            }
+        )
+    ),
+    output:
+    {
+        filename: "[name]"
+    },
+    devtool: "source-map"
+};

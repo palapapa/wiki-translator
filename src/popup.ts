@@ -1,7 +1,3 @@
-import path from "path";
-
-console.log(path.resolve(__dirname, 'src/**/*.js'));
-
 function Dropmenu_show(): void {
     document.getElementById("Dropdown")!.classList.toggle("show");
 }
