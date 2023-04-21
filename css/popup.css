@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'LinLibertine_R';
-    src: url('../css/fonts/LinLibertine_R.woff') format("woff"), url('../css/fonts/LinLibertine_R.ttf') format("truetype"), url('../css/fonts/LinLibertine_R.eot') format("embedded-opentype");
+    src: url('../fonts/LinLibertine_R.woff') format("woff"), url('../fonts/LinLibertine_R.ttf') format("truetype"), url('../fonts/LinLibertine_R.eot') format("embedded-opentype");
 }
 
 body {
@@ -71,7 +71,7 @@ p {
 /* language.svg */
 .languageIcon {
     vertical-align: text-bottom;
-    background-image: url(../css/icon/language.svg);
+    background-image: url(../images/language.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 20px;
@@ -79,14 +79,14 @@ p {
 }
 
 .dropButton:active .languageIcon {
-    background-image: url(../css/icon/language_active.svg);
+    background-image: url(../images/language_active.svg);
 }
 
 /* arrow-down.svg */
 .arrowDownIcon {
     align-self: center;
     margin-left: auto;
-    background-image: url(../css/icon/arrow-down.svg);
+    background-image: url(../images/arrow-down.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 15px;
@@ -94,7 +94,7 @@ p {
 }
 
 .dropButton:active .arrowDownIcon {
-    background-image: url(../css/icon/arrow-down_active.svg);
+    background-image: url(../images/arrow-down_active.svg);
 }
 
 #targetLanguageButton {
@@ -193,7 +193,7 @@ p {
 .linkIcon {
     vertical-align: text-bottom;
     margin-left: auto;
-    background-image: url(../css/icon/link.svg);
+    background-image: url(../images/link.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 15px;
@@ -201,7 +201,7 @@ p {
 }
 
 .topThreeItem:active .linkIcon {
-    background-image: url(../css/icon/link_active.svg);
+    background-image: url(../images/link_active.svg);
 }
 
 .button {
