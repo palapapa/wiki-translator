@@ -30,5 +30,5 @@ export default
     {
         filename: "[name]"
     },
-    devtool: "source-map"
+    devtool: "inline-source-map"
 };
