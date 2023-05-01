@@ -10,8 +10,7 @@
     },
     "permissions":
     [
-        "tabs",
-        "declarativeContent"
+        "tabs"
     ],
     "background":
     {
