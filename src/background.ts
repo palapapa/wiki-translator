@@ -1,3 +1,5 @@
+import { getCurrentUrl } from "./urlUtilities";
+
 /*
 chrome.declarativeContent.onPageChanged.removeRules
 (
@@ -32,10 +34,10 @@ chrome.declarativeContent.onPageChanged.removeRules
 
 async function checkIfOnWikipedia(): Promise<void>
 {
-    let tabs = await chrome.tabs.query({active: true});
-    if (tabs[0]?.url != undefined)
+    const url = await getCurrentUrl();
+    if (url != null)
     {
-        let hostname = new URL(tabs[0].url).hostname.toString();
+        const hostname = url.hostname.toString();
         if (hostname.substring(hostname.indexOf(".") + 1) == "wikipedia.org")
         {
             chrome.action.enable();

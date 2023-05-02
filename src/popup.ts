@@ -1,7 +1,10 @@
+import { fetchAllLanguages } from "./articleFetcher";
+import { getCurrentUrl } from "./urlUtilities";
+
 function dropmenuShow(): void {
     const dropdown = document.getElementById("dropdown");
     if (dropdown != null) {
-        dropdown.classList.toggle("show")
+        dropdown.classList.toggle("show");
     }
 }
 
@@ -16,7 +19,7 @@ window.onclick = function (event: MouseEvent): void {
             }
         }
     }
-}
+};
 
 function dropmenuUpdate(language: string): void {
     const targetLanguageText = document.getElementById('targetLanguageText');
@@ -76,3 +79,12 @@ if (targetMalayalam != null) {
         dropmenuUpdate("മലയാളം");
     };
 }
+
+window.onload = async () =>
+{
+    const currentUrl = await getCurrentUrl();
+    if (currentUrl != null)
+    {
+        fetchAllLanguages(currentUrl);
+    }
+};

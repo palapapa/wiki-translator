@@ -43,11 +43,11 @@
             "tsconfigRootDir": "."
         },
         "rules": {
-            "no-unexpected-multiline": "off"
+            "no-unexpected-multiline": "off",
+            "semi": "warn"
         },
         "ignorePatterns": [
-            "*",
-            "!src"
+            "dist"
         ]
     }
 }
