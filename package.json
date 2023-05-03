@@ -42,8 +42,11 @@
             "project": "config/tsconfig.json"
         },
         "rules": {
-            "no-unexpected-multiline": "off",
-            "semi": "warn"
+            "object-curly-spacing": ["warn", "always"],
+            "@typescript-eslint/object-curly-spacing": ["warn", "always"],
+            "semi": "error",
+            "brace-style": ["warn", "stroustrup"],
+            "eol-last": "warn"
         },
         "ignorePatterns": [
             "*",

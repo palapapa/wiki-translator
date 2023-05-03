@@ -80,11 +80,9 @@ if (targetMalayalam != null) {
     };
 }
 
-window.onload = async () =>
-{
+window.onload = async () => {
     const currentUrl = await getCurrentUrl();
-    if (currentUrl != null)
-    {
+    if (currentUrl != null) {
         fetchAllLanguages(currentUrl);
     }
 };

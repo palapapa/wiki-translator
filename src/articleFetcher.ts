@@ -1,31 +1,25 @@
 export { fetchAllLanguages };
 
-function getTitle(url: URL): string | null
-{
-    let title: string | undefined = undefined;
+function getTitle(url: URL): string | null {
+    let title: string | undefined;
     const urlString = url.toString();
     const titleDelimiters = ["/wiki/", "/zh-tw/", "/zh-cn/", "/zh-hk/", "/zh-mo/", "/zh-my/", "/zh-sg/"];
-    for (let i = 0; i < titleDelimiters.length && title == undefined; i++)
-    {
+    for (let i = 0; i < titleDelimiters.length && title == undefined; i++) {
         const delimiter = titleDelimiters[i];
-        if (delimiter != undefined)
-        {
+        if (delimiter != undefined) {
             title = urlString.split(delimiter)[1];
         }
     }
-    if (title == undefined) // If the title cannot be found
-    {
+    if (title == undefined) { // If the title cannot be found
         return null;
     }
     return title;
 }
 
-async function fetchAllLanguages(url: URL): Promise<[string, Document][] | null>
-{
+async function fetchAllLanguages(url: URL): Promise<[string, Document][] | null> {
     const title = getTitle(url);
     const language = url.hostname.split(".")[0];
-    if (title == null)
-    {
+    if (title == null) {
         return null;
     }
     const params = new URLSearchParams
