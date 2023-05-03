@@ -39,15 +39,16 @@
         ],
         "root": true,
         "parserOptions": {
-            "project": "./config/tsconfig.json",
-            "tsconfigRootDir": "."
+            "project": "config/tsconfig.json"
         },
         "rules": {
             "no-unexpected-multiline": "off",
             "semi": "warn"
         },
         "ignorePatterns": [
-            "dist"
+            "*",
+            "!src",
+            "!src/**"
         ]
     }
 }
