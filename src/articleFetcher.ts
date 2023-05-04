@@ -22,7 +22,7 @@ async function fetchAllLanguages(url: URL): Promise<[string, Document][] | null>
     if (title == null) {
         return null;
     }
-    const decodedTitle = decodeURI(title); // The MediaWiki api will only take decoded titles
+    const decodedTitle = decodeURI(title); // The title is converted back to unicode before using it in fetch. Otherwise fetch would encode the already percent encoded title again
     console.log(`Current title: ${decodedTitle}`);
     const params = new URLSearchParams(
         {
