@@ -18,20 +18,22 @@ function getTitle(url: URL): string | null {
 
 async function fetchAllLanguages(url: URL): Promise<[string, Document][] | null> {
     const title = getTitle(url);
-    const language = url.hostname.split(".")[0];
+    const currentLanguage = url.hostname.split(".")[0];
     if (title == null) {
         return null;
     }
-    const params = new URLSearchParams
-    (
+    const decodedTitle = decodeURI(title); // The MediaWiki api will only take decoded titles
+    console.log(`Current title: ${decodedTitle}`);
+    const params = new URLSearchParams(
         {
             action: "query",
             prop: "langlinks",
-            titles: title,
+            titles: decodedTitle,
             llprop: "url",
             lllimit: "max",
             redirects: "",
-            format: "json"
+            format: "json",
+            origin: "*"
         }
     ).toString();
     const queryUrl = new URL(url);

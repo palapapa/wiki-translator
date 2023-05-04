@@ -34,6 +34,7 @@ chrome.declarativeContent.onPageChanged.removeRules
 
 async function checkIfOnWikipedia(): Promise<void> {
     const url = await getCurrentUrl();
+    console.log(`Current URL: ${url}`);
     if (url != null) {
         const hostname = url.hostname.toString();
         if (hostname.substring(hostname.indexOf(".") + 1) == "wikipedia.org") {
