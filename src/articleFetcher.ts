@@ -1,4 +1,5 @@
 export { fetchAllLanguages };
+import type { Langlink, Page } from "./mediawikiTypes";
 
 function getTitle(url: URL): string | null {
     let title: string | undefined;
@@ -39,7 +40,12 @@ async function fetchAllLanguages(url: URL): Promise<[string, Document][] | null>
     const queryUrl = new URL(url);
     queryUrl.pathname = "/w/api.php";
     queryUrl.search = params.toString();
-    const query = await (await fetch(queryUrl)).json();
-    console.log(query);
-    return null;
+    const response = await fetch(queryUrl);
+    if (!response.ok) {
+        return null;
+    }
+    const responseObject = await response.json();
+    const langlinks = (Object.values(responseObject.query.pages)[0] as Page).langlinks;
+    let result: [string, Document][];
+    
 }
