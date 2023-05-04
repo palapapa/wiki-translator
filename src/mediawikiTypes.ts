@@ -1,10 +1,16 @@
-export type { Langlink, Page };
+export type { Langlink, QueriedPage, ParsedPage };
 
-type Langlink = {
+interface Langlink {
     lang: string;
     url: string;
 }
 
-type Page = {
+interface QueriedPage {
     langlinks: Langlink[];
 }
+
+interface ParsedPage {
+    text: AsteriskContent;
+}
+
+type AsteriskContent = Record<"*", string>;

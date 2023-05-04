@@ -1,5 +1,5 @@
 export { fetchAllLanguages };
-import type { Langlink, Page } from "./mediawikiTypes";
+import type { Langlink, QueriedPage } from "./mediawikiTypes";
 
 function getTitle(url: URL): string | null {
     let title: string | undefined;
@@ -17,14 +17,43 @@ function getTitle(url: URL): string | null {
     return title;
 }
 
-async function fetchAllLanguages(url: URL): Promise<[string, Document][] | null> {
+function getQueryUrl(url: URL, params: URLSearchParams): URL {
+    const queryUrl = new URL(url);
+    queryUrl.pathname = "/w/api.php";
+    queryUrl.search = params.toString();
+    return queryUrl;
+}
+
+async function getHtml(url: URL): Promise<Document | null> {
     const title = getTitle(url);
-    const currentLanguage = url.hostname.split(".")[0];
     if (title == null) {
         return null;
     }
     const decodedTitle = decodeURI(title); // The title is converted back to unicode before using it in fetch. Otherwise fetch would encode the already percent encoded title again
-    console.log(`Current title: ${decodedTitle}`);
+    const params = new URLSearchParams(
+        {
+            action: "parse",
+            page: decodedTitle,
+            redirects: "",
+            format: "json",
+            origin: "*"
+        }
+    );
+    const queryUrl = getQueryUrl(url, params);
+    const response = await fetch(queryUrl);
+    if (!response.ok) {
+        return null;
+    }
+    const responseObject = await response.json();
+    return (new DOMParser).parseFromString(responseObject.parse.text["*"], "text/html");
+}
+
+async function getLanglinks(url: URL): Promise<Langlink[] | null> {
+    const title = getTitle(url);
+    if (title == null) {
+        return null;
+    }
+    const decodedTitle = decodeURI(title); // The title is converted back to unicode before using it in fetch. Otherwise fetch would encode the already percent encoded title again
     const params = new URLSearchParams(
         {
             action: "query",
@@ -36,16 +65,31 @@ async function fetchAllLanguages(url: URL): Promise<[string, Document][] | null>
             format: "json",
             origin: "*"
         }
-    ).toString();
-    const queryUrl = new URL(url);
-    queryUrl.pathname = "/w/api.php";
-    queryUrl.search = params.toString();
+    );
+    const queryUrl = getQueryUrl(url, params);
     const response = await fetch(queryUrl);
     if (!response.ok) {
         return null;
     }
     const responseObject = await response.json();
-    const langlinks = (Object.values(responseObject.query.pages)[0] as Page).langlinks;
-    let result: [string, Document][];
-    
+    return (Object.values(responseObject.query.pages)[0] as QueriedPage).langlinks;
+}
+
+async function fetchAllLanguages(url: URL): Promise<[string, Document][] | null> {
+    const langlinks = await getLanglinks(url);
+    if (langlinks == null) {
+        return null;
+    }
+    const result: [string, Document][] = [];
+    for (let i = 0; i < langlinks.length; i++) {
+        const langlink = langlinks[i];
+        
+        if (langlink != undefined) {
+            const html = await getHtml(new URL(langlink.url));
+            if (html != null) {
+                result.push([langlink.lang, html]);
+            }
+        }
+    }
+    return result;
 }
