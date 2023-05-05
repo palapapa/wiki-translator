@@ -1,5 +1,6 @@
 export { fetchAllLanguages };
-import type { Langlink, QueriedPage } from "./mediawikiTypes";
+import type { LanglinksResponse, Langlink } from "./langlinksResponseTypes";
+import type { ParseResponse } from "./parseResponseTypes";
 
 function getTitle(url: URL): string | null {
     let title: string | undefined;
@@ -44,7 +45,7 @@ async function getHtml(url: URL): Promise<Document | null> {
     if (!response.ok) {
         return null;
     }
-    const responseObject = await response.json();
+    const responseObject: ParseResponse = await response.json();
     return (new DOMParser).parseFromString(responseObject.parse.text["*"], "text/html");
 }
 
@@ -71,8 +72,9 @@ async function getLanglinks(url: URL): Promise<Langlink[] | null> {
     if (!response.ok) {
         return null;
     }
-    const responseObject = await response.json();
-    return (Object.values(responseObject.query.pages)[0] as QueriedPage).langlinks;
+    const responseObject: LanglinksResponse = await response.json();
+    const page = responseObject.query.pages[0];
+    return page != undefined ? page.langlinks : null;
 }
 
 async function fetchAllLanguages(url: URL): Promise<[string, Document][] | null> {
