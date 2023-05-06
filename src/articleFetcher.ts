@@ -1,6 +1,6 @@
-export { fetchAllLanguages };
-import type { LanglinksResponse, Langlink } from "./langlinksResponseTypes";
-import type { ParseResponse } from "./parseResponseTypes";
+import { LanglinksResponse, Langlink } from "./langlinksResponseTypes";
+import { ParseResponse } from "./parseResponseTypes";
+import { WikiArticle } from "./wikiArticle";
 
 function getTitle(url: URL): string | null {
     let title: string | undefined;
@@ -77,19 +77,19 @@ async function getLanglinks(url: URL): Promise<Langlink[] | null> {
     return page != undefined ? page.langlinks : null;
 }
 
-async function fetchAllLanguages(url: URL): Promise<[string, Document][] | null> {
+export async function fetchAllLanguages(url: URL): Promise<WikiArticle[] | null> {
     const langlinks = await getLanglinks(url);
     if (langlinks == null) {
         return null;
     }
-    const result: [string, Document][] = [];
+    const result: WikiArticle[] = [];
     for (let i = 0; i < langlinks.length; i++) {
         const langlink = langlinks[i];
         
         if (langlink != undefined) {
             const html = await getHtml(new URL(langlink.url));
             if (html != null) {
-                result.push([langlink.lang, html]);
+                result.push({ language: langlink.lang, document: html });
             }
         }
     }
