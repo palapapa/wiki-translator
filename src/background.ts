@@ -51,4 +51,5 @@ async function checkIfOnWikipedia(): Promise<void> {
 chrome.runtime.onInstalled.addListener(checkIfOnWikipedia);
 chrome.runtime.onStartup.addListener(checkIfOnWikipedia);
 chrome.tabs.onActivated.addListener(checkIfOnWikipedia);
+chrome.tabs.onUpdated.addListener(checkIfOnWikipedia);
 chrome.windows.onFocusChanged.addListener(checkIfOnWikipedia);
