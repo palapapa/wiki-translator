@@ -39,15 +39,33 @@
         ],
         "root": true,
         "parserOptions": {
-            "project": "./config/tsconfig.json",
-            "tsconfigRootDir": "."
+            "project": "config/tsconfig.json"
         },
         "rules": {
-            "no-unexpected-multiline": "off"
+            "object-curly-spacing": "off",
+            "@typescript-eslint/object-curly-spacing": [
+                "warn",
+                "always"
+            ],
+            "semi": "error",
+            "brace-style": "off",
+            "@typescript-eslint/brace-style": ["warn", "stroustrup"],
+            "eol-last": "warn",
+            "space-before-blocks": "off",
+            "@typescript-eslint/space-before-blocks": "warn",
+            "arrow-spacing": "warn",
+            "keyword-spacing": "off",
+            "@typescript-eslint/keyword-spacing": "warn",
+            "switch-colon-spacing": "warn",
+            "block-spacing": "warn",
+            "indent": "warn",
+            "quotes": "off",
+            "@typescript-eslint/quotes": "warn"
         },
         "ignorePatterns": [
             "*",
-            "!src"
+            "!src",
+            "!src/**"
         ]
     }
 }

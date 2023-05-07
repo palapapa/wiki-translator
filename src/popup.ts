@@ -1,29 +1,33 @@
+import { fetchAllLanguages } from "./articleFetcher";
+import { getCurrentUrl } from "./urlUtilities";
+import { WikiArticle } from "./wikiArticle";
+
 function dropmenuShow(): void {
     const dropdown = document.getElementById("dropdown");
     if (dropdown != null) {
-        dropdown.classList.toggle("show")
+        dropdown.classList.toggle("show");
     }
 }
 
 // Close the dropdown if the user clicks outside of it
 window.onclick = function (event: MouseEvent): void {
-    if (event.target instanceof Element && !(event.target as Element).matches('.coverDropButton')) {
+    if (event.target instanceof Element && !(event.target as Element).matches(".coverDropButton")) {
         const dropdowns = document.getElementsByClassName("dropdownContent");
         for (let i = 0; i < dropdowns.length; i++) {
             const openDropdown = dropdowns[i];
-            if (openDropdown != undefined && openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
+            if (openDropdown != undefined && openDropdown.classList.contains("show")) {
+                openDropdown.classList.remove("show");
             }
         }
     }
-}
+};
 
 function dropmenuUpdate(language: string): void {
-    const targetLanguageText = document.getElementById('targetLanguageText');
+    const targetLanguageText = document.getElementById("targetLanguageText");
     if (targetLanguageText != null) {
         targetLanguageText.innerHTML = ("Target Language: " + language);
     }
-    const targetLanguageButtonText = document.getElementById('targetLanguageButtonText');
+    const targetLanguageButtonText = document.getElementById("targetLanguageButtonText");
     if (targetLanguageButtonText != null) {
         if (language == "Auto detect") {
             targetLanguageButtonText.innerHTML = "Detected Language";
@@ -76,3 +80,12 @@ if (targetMalayalam != null) {
         dropmenuUpdate("മലയാളം");
     };
 }
+
+window.onload = async () => {
+    const currentUrl = await getCurrentUrl();
+    let wikiArticles: WikiArticle[] | null = null;
+    if (currentUrl != null) {
+        wikiArticles = await fetchAllLanguages(currentUrl);
+        console.log(wikiArticles);
+    }
+};

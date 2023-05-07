@@ -12,7 +12,7 @@ export default
         (
             path.resolve
             (
-                __dirname, "../dist/**/*.js"
+                __dirname, "../distUnbundled/**/*.js" // distUnbundled is for compiled but not yet bundled js files
             ).replaceAll("\\", "/") // path.resolve returns Windows path. It is converted to POSIX path here.
         ).map
         (
@@ -21,14 +21,28 @@ export default
         (
             (p) =>
             {
-                let filename = p.split("dist/")[1];
+                let filename = p.split("/distUnbundled/")[1];
                 return [filename, p];
             }
         )
     ),
     output:
     {
-        filename: "[name]"
+        filename: "[name]",
+        path: path.resolve(__dirname, "../dist")
     },
-    devtool: "inline-source-map"
+    devtool: "inline-source-map",
+    module:
+    {
+        rules:
+        [
+            {
+                test: /\.m?js/,
+                resolve:
+                {
+                    fullySpecified: false,
+                }
+            }
+        ]
+    }
 };

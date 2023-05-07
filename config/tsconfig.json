@@ -2,7 +2,7 @@
     "compilerOptions":
     {
         "rootDir": "../src",
-        "outDir": "../dist",
+        "outDir": "../distUnbundled",
         "target": "ES2022",
         "module": "ES2022",
         "esModuleInterop": true,
