@@ -48,8 +48,17 @@ async function checkIfOnWikipedia(): Promise<void> {
     }
 }
 
+chrome.runtime.onInstalled.addListener(() => console.log("onInstalled fired"));
 chrome.runtime.onInstalled.addListener(checkIfOnWikipedia);
+
+chrome.runtime.onStartup.addListener(() => console.log("onStartup fired"));
 chrome.runtime.onStartup.addListener(checkIfOnWikipedia);
+
+chrome.tabs.onActivated.addListener(() => console.log("onActivated fired"));
 chrome.tabs.onActivated.addListener(checkIfOnWikipedia);
+
+chrome.tabs.onUpdated.addListener(() => console.log("onUpdated fired"));
 chrome.tabs.onUpdated.addListener(checkIfOnWikipedia);
+
+chrome.windows.onFocusChanged.addListener(() => console.log("onFocusChanged fired"));
 chrome.windows.onFocusChanged.addListener(checkIfOnWikipedia);

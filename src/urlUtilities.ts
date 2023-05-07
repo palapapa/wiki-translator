@@ -8,5 +8,10 @@ export async function getCurrentUrl(): Promise<URL | null> {
         return null;
     }
     console.log(`getCurrentUrl: ${urlString}`);
-    return new URL(urlString);
+    try {
+        return new URL(urlString);
+    }
+    catch (e) {
+        return null;
+    }
 }
