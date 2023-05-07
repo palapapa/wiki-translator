@@ -60,7 +60,8 @@
             "block-spacing": "warn",
             "indent": "warn",
             "quotes": "off",
-            "@typescript-eslint/quotes": "warn"
+            "@typescript-eslint/quotes": "warn",
+            "space-infix-ops": "warn"
         },
         "ignorePatterns": [
             "*",
