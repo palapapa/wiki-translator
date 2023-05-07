@@ -1,5 +1,6 @@
 import { LanglinksResponse, Langlink } from "./langlinksResponseTypes";
 import { ParseResponse } from "./parseResponseTypes";
+import { getCurrentUrl } from "./urlUtilities";
 import { WikiArticle } from "./wikiArticle";
 
 function getTitle(url: URL): string | null {
@@ -73,8 +74,15 @@ async function getLanglinks(url: URL): Promise<Langlink[] | null> {
         return null;
     }
     const responseObject: LanglinksResponse = await response.json();
-    const page = responseObject.query.pages[0];
-    return page != undefined ? page.langlinks : null;
+    let langlinks: Langlink[] | undefined = Object.values(responseObject.query.pages)[0]?.langlinks;
+    if (langlinks == undefined) { // If this article only has one language
+        langlinks = [];
+    }
+    const currentLanguage = url.hostname.split(".")[0], currentUrl = await getCurrentUrl();
+    if (currentLanguage != undefined && currentUrl != null) {
+        langlinks.push({ lang: currentLanguage, url: currentUrl.toString(), "*": title });
+    }
+    return langlinks;
 }
 
 export async function fetchAllLanguages(url: URL): Promise<WikiArticle[] | null> {
@@ -85,7 +93,6 @@ export async function fetchAllLanguages(url: URL): Promise<WikiArticle[] | null>
     const result: WikiArticle[] = [];
     for (let i = 0; i < langlinks.length; i++) {
         const langlink = langlinks[i];
-        
         if (langlink != undefined) {
             const html = await getHtml(new URL(langlink.url));
             if (html != null) {

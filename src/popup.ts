@@ -1,5 +1,6 @@
 import { fetchAllLanguages } from "./articleFetcher";
 import { getCurrentUrl } from "./urlUtilities";
+import { WikiArticle } from "./wikiArticle";
 
 function dropmenuShow(): void {
     const dropdown = document.getElementById("dropdown");
@@ -82,7 +83,9 @@ if (targetMalayalam != null) {
 
 window.onload = async () => {
     const currentUrl = await getCurrentUrl();
+    let wikiArticles: WikiArticle[] | null = null;
     if (currentUrl != null) {
-        fetchAllLanguages(currentUrl);
+        wikiArticles = await fetchAllLanguages(currentUrl);
+        console.log(wikiArticles);
     }
 };
