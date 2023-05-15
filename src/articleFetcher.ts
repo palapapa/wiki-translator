@@ -90,14 +90,19 @@ export async function fetchAllLanguages(url: URL): Promise<WikiArticle[] | null>
     if (langlinks == null) {
         return null;
     }
-    const result: WikiArticle[] = [];
+    const result: WikiArticle[] = [], promises: Promise<Document | null>[] = [];
     for (let i = 0; i < langlinks.length; i++) {
         const langlink = langlinks[i];
         if (langlink != undefined) {
-            const html = await getHtml(new URL(langlink.url));
-            if (html != null) {
-                result.push({ language: langlink.lang, document: html });
-            }
+            promises.push(getHtml(new URL(langlink.url)));
+        }
+    }
+    const documents = await Promise.all(promises);
+    for (let i = 0; i < documents.length; i++) {
+        const document = documents[i];
+        const langlink = langlinks[i];
+        if (document != null && document != undefined && langlink != undefined) {
+            result.push({ language: langlink.lang, document: document });
         }
     }
     return result;
