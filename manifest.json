@@ -13,5 +13,8 @@
     "background": {
         "service_worker": "dist/background.js",
         "type": "module"
-    }
+    },
+    "host_permissions": [
+        "https://translate.googleapis.com/*"
+    ]
 }

@@ -61,7 +61,9 @@
             "indent": "warn",
             "quotes": "off",
             "@typescript-eslint/quotes": "warn",
-            "space-infix-ops": "warn"
+            "space-infix-ops": "warn",
+            "new-parens": "warn",
+            "new-cap": "warn"
         },
         "ignorePatterns": [
             "*",

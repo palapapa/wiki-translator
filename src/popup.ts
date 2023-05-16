@@ -1,4 +1,5 @@
 import { fetchAllLanguages } from "./articleFetcher";
+import { translateArticles } from "./articleTranslator";
 import { getCurrentUrl } from "./urlUtilities";
 import { WikiArticle } from "./wikiArticle";
 
@@ -86,6 +87,9 @@ window.onload = async () => {
     let wikiArticles: WikiArticle[] | null = null;
     if (currentUrl != null) {
         wikiArticles = await fetchAllLanguages(currentUrl);
+        if (wikiArticles != null) {
+            wikiArticles = await translateArticles(wikiArticles, "zh-TW");
+        }
         console.log(wikiArticles);
     }
 };

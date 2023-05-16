@@ -47,7 +47,7 @@ async function getHtml(url: URL): Promise<Document | null> {
         return null;
     }
     const responseObject: ParseResponse = await response.json();
-    return (new DOMParser).parseFromString(responseObject.parse.text["*"], "text/html");
+    return new DOMParser().parseFromString(responseObject.parse.text["*"], "text/html");
 }
 
 async function getLanglinks(url: URL): Promise<Langlink[] | null> {
