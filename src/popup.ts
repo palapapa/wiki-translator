@@ -26,7 +26,7 @@ window.onclick = function (event: MouseEvent): void {
 function dropmenuUpdate(language: string): void {
     const targetLanguageText = document.getElementById("targetLanguageText");
     if (targetLanguageText != null) {
-        targetLanguageText.innerHTML = ("Target Language: " + language);
+        targetLanguageText.innerHTML = ("Target Language : " + language);
     }
     const targetLanguageButtonText = document.getElementById("targetLanguageButtonText");
     if (targetLanguageButtonText != null) {
@@ -41,7 +41,6 @@ if (outputButton != null) {
     outputButton.onclick = dropmenuShow;
 }
 
-
 // 語言選項
 function createTargetLanguageList(): void {
     console.log("createTargetLanguageList");
@@ -54,6 +53,9 @@ function createTargetLanguageList(): void {
         if (supportedLanguage != undefined) {
             const listItem = document.createElement("span");
             listItem.textContent = supportedLanguage.language;
+            if (supportedLanguage.codes[0] != undefined) {
+                listItem.setAttribute("id", supportedLanguage.codes[0]);
+            }
             if (dropdown != undefined) {
                 dropdown.appendChild(listItem);
             }
@@ -62,38 +64,32 @@ function createTargetLanguageList(): void {
 }
 
 
-// 各語言選項
-
-const targetEnglish = document.getElementById("english");
-if (targetEnglish != null) {
-    targetEnglish.onclick = function () {
-        dropmenuUpdate("English");
-    };
+// 各語言選項的點擊事件
+function setLanguageOnClick(targetId: string, language: string) {
+    const targetElement = document.getElementById(targetId);
+    if (targetElement != null) {
+        targetElement.onclick = function () {
+            dropmenuUpdate(language);
+        };
+    }
 }
 
-const targetChinese = document.getElementById("chinese");
-if (targetChinese != null) {
-    targetChinese.onclick = function () {
-        dropmenuUpdate("中文");
-    };
+function setLanguagesOnClick() {
+    for (let i = 0; i < supportedLanguages.length; i++) {
+        const supportedLanguage = supportedLanguages[i];
+        if (supportedLanguage != undefined) {
+            const code = supportedLanguage.codes[0];
+            if (code != undefined) {
+                setLanguageOnClick(code, supportedLanguage.language);
+            }
+        }
+    }
 }
 
-const targetSpanish = document.getElementById("spanish");
-if (targetSpanish != null) {
-    targetSpanish.onclick = function () {
-        dropmenuUpdate("Español");
-    };
-}
-
-const targetMalayalam = document.getElementById("malayalam");
-if (targetMalayalam != null) {
-    targetMalayalam.onclick = function () {
-        dropmenuUpdate("മലയാളം");
-    };
-}
-
+// 載入時執行
 window.onload = async () => {
     createTargetLanguageList();
+    setLanguagesOnClick();
     const currentUrl = await getCurrentUrl();
     let wikiArticles: WikiArticle[] | null = null;
     if (currentUrl != null) {
