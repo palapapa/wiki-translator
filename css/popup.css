@@ -107,16 +107,7 @@ p {
 }
 
 #targetLanguageButton:target {
-    /* box-shadow: 0 3px #324a88;
-    */
     background-size: 100% 0.3em;
-}
-
-#auto {
-    border: 1px solid #3366cc;
-    border-left: none;
-    border-right: none;
-    border-top: none;
 }
 
 .dropdownContent {
@@ -124,6 +115,9 @@ p {
     position: absolute;
     background-color: #fcfcfc;
     width: 300px;
+    height: 200px;
+    overflow-x: hidden;
+    overflow-y: scroll;
     overflow: auto;
     font-weight: bold;
     text-indent: 15px;
