@@ -1,6 +1,7 @@
 import { fetchAllLanguages } from "./articleFetcher";
 import { getCurrentUrl } from "./urlUtilities";
 import { WikiArticle } from "./wikiArticle";
+import { supportedLanguages } from "./googleTranslateSupportedLanguages";
 
 function dropmenuShow(): void {
     const dropdown = document.getElementById("dropdown");
@@ -29,14 +30,9 @@ function dropmenuUpdate(language: string): void {
     }
     const targetLanguageButtonText = document.getElementById("targetLanguageButtonText");
     if (targetLanguageButtonText != null) {
-        if (language == "Auto detect") {
-            targetLanguageButtonText.innerHTML = "Detected Language";
-        }
-        else {
-            targetLanguageButtonText.innerHTML = language;
-        }
+        targetLanguageButtonText.innerHTML = language;
     }
-    
+
 }
 
 // 開啟 target language 下拉選單
@@ -45,13 +41,28 @@ if (outputButton != null) {
     outputButton.onclick = dropmenuShow;
 }
 
-// 各語言選項
-const targetAuto = document.getElementById("auto");
-if (targetAuto != null) {
-    targetAuto.onclick = function () {
-        dropmenuUpdate("Auto detect");
-    };
+
+// 語言選項
+function createTargetLanguageList(): void {
+    console.log("createTargetLanguageList");
+    const dropdown = document.getElementById("dropdown");
+    // const newSpan = document.createElement("span");
+
+    // 遍歷清單並生成相應的項目
+    for (let i = 0; i < supportedLanguages.length; i++) {
+        const supportedLanguage = supportedLanguages[i];
+        if (supportedLanguage != undefined) {
+            const listItem = document.createElement("span");
+            listItem.textContent = supportedLanguage.language;
+            if (dropdown != undefined) {
+                dropdown.appendChild(listItem);
+            }
+        }
+    }
 }
+
+
+// 各語言選項
 
 const targetEnglish = document.getElementById("english");
 if (targetEnglish != null) {
@@ -82,6 +93,7 @@ if (targetMalayalam != null) {
 }
 
 window.onload = async () => {
+    createTargetLanguageList();
     const currentUrl = await getCurrentUrl();
     let wikiArticles: WikiArticle[] | null = null;
     if (currentUrl != null) {
