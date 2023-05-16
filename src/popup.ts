@@ -3,6 +3,8 @@ import { getCurrentUrl } from "./urlUtilities";
 import { WikiArticle } from "./wikiArticle";
 import { supportedLanguages } from "./googleTranslateSupportedLanguages";
 
+export let selectedTargetLanguage = "";
+
 function dropmenuShow(): void {
     const dropdown = document.getElementById("dropdown");
     if (dropdown != null) {
@@ -45,7 +47,6 @@ if (outputButton != null) {
 function createTargetLanguageList(): void {
     console.log("createTargetLanguageList");
     const dropdown = document.getElementById("dropdown");
-    // const newSpan = document.createElement("span");
 
     // 遍歷清單並生成相應的項目
     for (let i = 0; i < supportedLanguages.length; i++) {
@@ -63,13 +64,13 @@ function createTargetLanguageList(): void {
     }
 }
 
-
 // 各語言選項的點擊事件
-function setLanguageOnClick(targetId: string, language: string) {
-    const targetElement = document.getElementById(targetId);
+function setLanguageOnClick(languageCode: string, language: string) {
+    const targetElement = document.getElementById(languageCode);
     if (targetElement != null) {
         targetElement.onclick = function () {
             dropmenuUpdate(language);
+            selectedTargetLanguage = languageCode;
         };
     }
 }
