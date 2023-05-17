@@ -31,11 +31,6 @@ function dropmenuUpdate(language: string): void {
     if (targetLanguageText != null) {
         targetLanguageText.innerHTML = ("Target Language : " + language);
     }
-    const targetLanguageButtonText = document.getElementById("targetLanguageButtonText");
-    if (targetLanguageButtonText != null) {
-        targetLanguageButtonText.innerHTML = language;
-    }
-
 }
 
 // 開啟 target language 下拉選單
@@ -72,6 +67,7 @@ function setLanguageOnClick(languageCode: string, language: string) {
         targetElement.onclick = function () {
             dropmenuUpdate(language);
             selectedTargetLanguage = languageCode;
+            console.log(`Currently selected language: ${languageCode}`);
         };
     }
 }
