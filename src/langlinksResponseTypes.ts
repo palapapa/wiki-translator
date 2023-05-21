@@ -1,16 +1,16 @@
 export interface LanglinksResponse {
-    batchcomplete: string;
-    query: Query;
-    limits: Limits;
+    batchcomplete?: string;
+    query?: Query;
+    limits?: Limits;
 }
 
 export interface Limits {
-    langlinks: number;
+    langlinks?: number;
 }
 
 export interface Query {
-    normalized: Normalized[];
-    pages: Pages;
+    normalized?: Normalized[];
+    pages?: Pages;
 }
 
 export interface Pages {
@@ -18,19 +18,19 @@ export interface Pages {
 }
 
 export interface Page {
-    pageid: number;
-    ns: number;
-    title: string;
-    langlinks: Langlink[];
+    pageid?: number;
+    ns?: number;
+    title?: string;
+    langlinks?: Langlink[];
 }
 
 export interface Langlink {
-    lang: string;
-    url: string;
-    "*": string;
+    lang?: string;
+    url?: string;
+    "*"?: string;
 }
 
 export interface Normalized {
-    from: string;
-    to: string;
+    from?: string;
+    to?: string;
 }

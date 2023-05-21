@@ -47,7 +47,11 @@ async function getHtml(url: URL): Promise<Document | null> {
         return null;
     }
     const responseObject: ParseResponse = await response.json();
-    return new DOMParser().parseFromString(responseObject.parse.text["*"], "text/html");
+    const htmlString = responseObject?.parse?.text?.["*"];
+    if (htmlString != undefined) {
+        return new DOMParser().parseFromString(htmlString, "text/html");
+    }
+    return null;
 }
 
 async function getLanglinks(url: URL): Promise<Langlink[] | null> {
@@ -74,7 +78,11 @@ async function getLanglinks(url: URL): Promise<Langlink[] | null> {
         return null;
     }
     const responseObject: LanglinksResponse = await response.json();
-    let langlinks: Langlink[] | undefined = Object.values(responseObject.query.pages)[0]?.langlinks;
+    const pages = responseObject?.query?.pages;
+    if (pages == undefined) {
+        return null;
+    }
+    let langlinks: Langlink[] | undefined = Object.values(pages)[0]?.langlinks;
     if (langlinks == undefined) { // If this article only has one language
         langlinks = [];
     }
@@ -93,7 +101,7 @@ export async function fetchAllLanguages(url: URL): Promise<WikiArticle[] | null>
     const result: WikiArticle[] = [], promises: Promise<Document | null>[] = [];
     for (let i = 0; i < langlinks.length; i++) {
         const langlink = langlinks[i];
-        if (langlink != undefined) {
+        if (langlink != undefined && langlink.url != undefined) {
             promises.push(getHtml(new URL(langlink.url)));
         }
     }
@@ -101,7 +109,7 @@ export async function fetchAllLanguages(url: URL): Promise<WikiArticle[] | null>
     for (let i = 0; i < documents.length; i++) {
         const document = documents[i];
         const langlink = langlinks[i];
-        if (document != null && document != undefined && langlink != undefined) {
+        if (document != null && document != undefined && langlink != undefined && langlink.lang != undefined) {
             result.push({ language: langlink.lang, document: document });
         }
     }
