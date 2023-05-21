@@ -1,4 +1,6 @@
 export interface ParseResponse {
+    error: Error;
+    servedby: string;
     parse: Parse;
 }
 
@@ -6,7 +8,7 @@ export interface Parse {
     title: string;
     pageid: number;
     revid: number;
-    redirects: string[];
+    redirects: Redirect[];
     text: Text;
     langlinks: Langlink[];
     categories: Category[];
@@ -15,7 +17,6 @@ export interface Parse {
     images: string[];
     externallinks: string[];
     sections: Section[];
-    showtoc: string;
     parsewarnings: string[];
     displaytitle: string;
     iwlinks: Iwlink[];
@@ -72,5 +73,16 @@ export interface Langlink {
 }
 
 export interface Text {
+    "*": string;
+}
+
+export interface Redirect {
+    from: string;
+    to: string;
+}
+
+export interface Error {
+    code: string;
+    info: string;
     "*": string;
 }
