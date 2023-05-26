@@ -18,7 +18,7 @@ async function translateArticle(article: WikiArticle, targetLanguage: string, so
             "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
-            q: new XMLSerializer().serializeToString(article.document),
+            q: article.document.documentElement.outerHTML,
         })
     });
     if (!response.ok) {
