@@ -139,3 +139,12 @@ export const supportedLanguages: LanguageCodeMapping[] = [
     { language: "Yoruba", codes: ["yo"] },
     { language: "Zulu", codes: ["zu"] },
 ];
+
+export function getFullNameFromCode(code: string): string | null {
+    for (const pair of supportedLanguages) {
+        if (pair.codes.includes(code)) {
+            return pair.language;
+        }
+    }
+    return null;
+}

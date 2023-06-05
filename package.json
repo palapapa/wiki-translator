@@ -63,7 +63,8 @@
             "@typescript-eslint/quotes": "warn",
             "space-infix-ops": "warn",
             "new-parens": "warn",
-            "new-cap": "warn"
+            "new-cap": "warn",
+            "eqeqeq": ["warn", "always", { "null": "ignore" }]
         },
         "ignorePatterns": [
             "*",
