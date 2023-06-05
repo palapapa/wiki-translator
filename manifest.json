@@ -16,5 +16,11 @@
     },
     "host_permissions": [
         "https://translate.googleapis.com/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["*.wikipedia.org/*"],
+            "js": ["dist/translationReplacer.js"]
+        }
     ]
 }
