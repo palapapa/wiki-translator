@@ -155,13 +155,17 @@ p {
     font-size: 15px;
 }
 
-.topThreeItem {
+#topThreeItems {
     display: flex;
-    height: auto;
+    flex-direction: column;
+    row-gap: 10px;
+    justify-content: space-between;
+}
+
+.topThreeItem {
     background-color: white;
     color: #3366cc;
     padding: 10px;
-    margin-bottom: 10px;
     text-align: left;
     text-indent: 25px;
     font-weight: 600;

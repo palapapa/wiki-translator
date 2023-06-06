@@ -108,7 +108,7 @@ window.onload = async () => {
             const translatedWikiArticles: TranslatedWikiArticle[] = await translateArticles(wikiArticles, "zh-TW");
             console.log(translatedWikiArticles);
             translatedWikiArticles.sort((a, b) => b.length - a.length);
-            const topLanguagesList = document.getElementById("topLanguages");
+            const topLanguagesList = document.getElementById("topThreeItems");
             if (topLanguagesList !== null) {
                 for (let i = 0; i < 3 && i < translatedWikiArticles.length; i++) {
                     const translatedWikiArticle = translatedWikiArticles[i];
