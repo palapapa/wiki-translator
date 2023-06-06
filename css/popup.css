@@ -77,7 +77,7 @@ p {
 }
 
 .dropButton:active .languageIcon {
-    background-image: url(../images/languageActive.svg);
+    filter: brightness(0) invert(1);
 }
 
 /* arrowDown.svg */
@@ -91,7 +91,7 @@ p {
 }
 
 .dropButton:active .arrowDownIcon {
-    background-image: url(../images/arrowDownActive.svg);
+    filter: brightness(0) invert(1);
 }
 
 #targetLanguageButton {
@@ -163,6 +163,7 @@ p {
 }
 
 .topThreeItem {
+    display: flex;
     background-color: white;
     color: #3366cc;
     padding: 10px;
@@ -194,7 +195,7 @@ p {
 }
 
 .topThreeItem:active .linkIcon {
-    background-image: url(../images/linkActive.svg);
+    filter: brightness(0) invert(1);
 }
 
 .button {
