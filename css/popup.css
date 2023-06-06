@@ -70,7 +70,6 @@ p {
 /* language.svg */
 .languageIcon {
     vertical-align: text-bottom;
-    background-image: url(../images/language.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 20px;
@@ -85,7 +84,6 @@ p {
 .arrowDownIcon {
     align-self: center;
     margin-left: auto;
-    background-image: url(../images/arrowDown.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 15px;
@@ -261,4 +259,11 @@ p {
     justify-content: center;
     text-align: center;
     margin: 0px;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    row-gap: 10px;
 }
