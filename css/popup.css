@@ -5,6 +5,7 @@
 
 body {
     font-family: Arial;
+    min-height: 300px;
 }
 
 p {
@@ -140,11 +141,9 @@ p {
 
 #topLanguages {
     width: 300px;
-    height: auto;
     margin: 0px;
     padding: 10px;
     padding-top: 0px;
-    height: auto;
     position: relative;
 }
 
