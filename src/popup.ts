@@ -91,8 +91,9 @@ function createTopThreeItem(translatedWikiArticle: TranslatedWikiArticle): HTMLE
     topThreeItem.appendChild(
         document.createTextNode(getFullNameFromCode(translatedWikiArticle.language) ?? "<Error: Unknown Language>")
     );
-    const icon = document.createElement("i");
+    const icon = document.createElement("img");
     icon.className = "linkIcon";
+    icon.setAttribute("src", "../images/link.svg");
     topThreeItem.appendChild(icon);
     return topThreeItem;
 }

@@ -20,8 +20,6 @@ p {
     margin-bottom: -20px;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: -5px;
-    padding-bottom: -5px;
     font-size: 17px;
     font-family: "LinLibertine_R";
 }
@@ -163,7 +161,6 @@ p {
 }
 
 .topThreeItem {
-    display: flex;
     background-color: white;
     color: #3366cc;
     padding: 10px;
@@ -187,11 +184,11 @@ p {
 .linkIcon {
     vertical-align: text-bottom;
     margin-left: auto;
-    background-image: url(../images/link.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 15px;
     height: 15px;
+    float: right;
 }
 
 .topThreeItem:active .linkIcon {
