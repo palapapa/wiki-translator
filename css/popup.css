@@ -157,7 +157,6 @@ p {
     display: flex;
     flex-direction: column;
     row-gap: 10px;
-    justify-content: space-between;
 }
 
 .topThreeItem {
@@ -265,7 +264,6 @@ p {
 
 .controls {
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
     row-gap: 10px;
 }
