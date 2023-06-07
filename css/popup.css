@@ -269,3 +269,14 @@ p {
     flex-direction: column;
     row-gap: 10px;
 }
+
+#loadingIconCenterer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#loadingIcon {
+    width: 30px;
+    height: 30px;
+}

@@ -119,6 +119,7 @@ window.onload = async () => {
                         }
                         const topThreeItem = createTopThreeItem(translatedWikiArticle);
                         topLanguagesList.appendChild(topThreeItem);
+                        document.getElementById("loadingIconCenterer")?.remove();
                     }
                 }
             }
