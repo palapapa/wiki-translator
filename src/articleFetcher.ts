@@ -16,7 +16,7 @@ function getTitle(url: URL): string | null {
     if (title === undefined) { // If the title cannot be found
         return null;
     }
-    return title;
+    return title.split("#")[0] ?? null; // Removes possible hash
 }
 
 function getQueryUrl(url: URL, params: URLSearchParams): URL {
