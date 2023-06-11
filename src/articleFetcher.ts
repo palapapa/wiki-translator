@@ -1,6 +1,6 @@
 import { LanglinksResponse, Langlink } from "./langlinksResponseTypes";
 import { ParseResponse } from "./parseResponseTypes";
-import { getWikiArticleLanguage } from "./urlUtilities";
+import { getWikiArticleLanguageCode } from "./urlUtilities";
 import { WikiArticle } from "./wikiArticle";
 
 function getTitle(url: URL): string | null {
@@ -86,7 +86,7 @@ async function getLanglinks(url: URL): Promise<Langlink[] | null> {
     if (langlinks === undefined) { // If this article only has one language
         langlinks = [];
     }
-    const currentLanguage = getWikiArticleLanguage(url);
+    const currentLanguage = getWikiArticleLanguageCode(url);
     if (currentLanguage !== null) {
         langlinks.push({ lang: currentLanguage, url: url.toString(), "*": title });
     }

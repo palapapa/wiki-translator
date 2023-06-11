@@ -1,6 +1,6 @@
 import { fetchAllLanguages } from "./articleFetcher";
 import { translateArticles } from "./articleTranslator";
-import { getCurrentUrl, getWikiArticleLanguage } from "./urlUtilities";
+import { getCurrentUrl, getWikiArticleLanguageCode } from "./urlUtilities";
 import { WikiArticle } from "./wikiArticle";
 import { supportedLanguages, getFullNameFromCode } from "./googleTranslateSupportedLanguages";
 import { TranslatedWikiArticle } from "./translatedWikiArticle";
@@ -57,14 +57,22 @@ function createTargetLanguageList(): void {
     }
 }
 
-function selectLanguage(languageCode: string): void {
+function dropmenuUpdateWithLanguageCode(languageCode: string): boolean {
     const language = getFullNameFromCode(languageCode);
     if (language === null) {
-        return;
+        return false;
     }
     dropmenuUpdate(language);
-    selectedTargetLanguage = languageCode;
     console.log(`Currently selected language: ${languageCode}`);
+    return true;
+}
+
+async function selectLanguage(languageCode: string): Promise<void> {
+    const isSuccess = dropmenuUpdateWithLanguageCode(languageCode);
+    if (isSuccess) {
+        selectedTargetLanguage = languageCode;
+        await addTop3LanguageButtons(languageCode);
+    }
 }
 
 // 各語言選項的點擊事件
@@ -75,7 +83,7 @@ function setLanguageOnClick(languageCode: string): void {
     }
 }
 
-function setLanguagesOnClick() {
+function setLanguagesOnClick(): void {
     for (const supportedLanguage of supportedLanguages) {
         const code = supportedLanguage.codes[0];
         if (code !== undefined) {
@@ -97,24 +105,21 @@ function createTopThreeItem(translatedWikiArticle: TranslatedWikiArticle): HTMLE
     return topThreeItem;
 }
 
-window.onload = async () => {
-    createTargetLanguageList();
-    setLanguagesOnClick();
+async function addTop3LanguageButtons(languageCode: string): Promise<void> {
     const currentUrl = await getCurrentUrl();
     let wikiArticles: WikiArticle[] | null = null;
     if (currentUrl === null) {
         return;
     }
-    const currentLanguage = getWikiArticleLanguage(currentUrl);
+    const currentLanguage = getWikiArticleLanguageCode(currentUrl);
     if (currentLanguage === null) {
         return;
     }
-    selectLanguage(currentLanguage);
     wikiArticles = await fetchAllLanguages(currentUrl);
     if (wikiArticles === null) {
         return;
     }
-    const translatedWikiArticles: TranslatedWikiArticle[] = await translateArticles(wikiArticles, "zh-TW");
+    const translatedWikiArticles: TranslatedWikiArticle[] = await translateArticles(wikiArticles, languageCode);
     console.log(translatedWikiArticles);
     translatedWikiArticles.sort((a, b) => b.length - a.length);
     const topLanguagesList = document.getElementById("topThreeItems");
@@ -132,4 +137,18 @@ window.onload = async () => {
             document.getElementById("loadingIconCenterer")?.remove();
         }
     }
+}
+
+window.onload = async () => {
+    createTargetLanguageList();
+    setLanguagesOnClick();
+    const currentUrl = await getCurrentUrl();
+    if (currentUrl === null) {
+        return;
+    }
+    const currentLanguage = getWikiArticleLanguageCode(currentUrl);
+    if (currentLanguage === null) {
+        return;
+    }
+    await selectLanguage(currentLanguage);
 };

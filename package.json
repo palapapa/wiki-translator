@@ -70,7 +70,11 @@
             "one-var": ["warn", "consecutive"],
             "no-extra-parens": "warn",
             "@typescript-eslint/no-misused-promises": ["warn", { "checksVoidReturn": false }],
-            "@typescript-eslint/restrict-template-expressions": ["off"]
+            "@typescript-eslint/restrict-template-expressions": ["off"],
+            "semi-spacing": "warn",
+            "no-whitespace-before-property": "warn",
+            "no-multi-spaces": "warn",
+            "no-trailing-spaces": "warn"
         },
         "ignorePatterns": [
             "*",

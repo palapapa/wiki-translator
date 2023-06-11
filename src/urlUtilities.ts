@@ -16,7 +16,7 @@ export async function getCurrentUrl(): Promise<URL | null> {
     }
 }
 
-export function getWikiArticleLanguage(url: URL): string | null {
+export function getWikiArticleLanguageCode(url: URL): string | null {
     if (!url.hostname.endsWith("wikipedia.org")) {
         return null;
     }
