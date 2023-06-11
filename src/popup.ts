@@ -16,11 +16,10 @@ function dropmenuShow(): void {
 
 // Close the dropdown if the user clicks outside of it
 window.onclick = function (event: MouseEvent): void {
-    if (event.target instanceof Element && !(event.target as Element).matches(".coverDropButton")) {
+    if (event.target instanceof Element && !event.target.matches(".coverDropButton")) {
         const dropdowns = document.getElementsByClassName("dropdownContent");
-        for (let i = 0; i < dropdowns.length; i++) {
-            const openDropdown = dropdowns[i];
-            if (openDropdown !== undefined && openDropdown.classList.contains("show")) {
+        for (const openDropdown of dropdowns) {
+            if (openDropdown.classList.contains("show")) {
                 openDropdown.classList.remove("show");
             }
         }
@@ -30,7 +29,7 @@ window.onclick = function (event: MouseEvent): void {
 function dropmenuUpdate(language: string): void {
     const targetLanguageText = document.getElementById("targetLanguageText");
     if (targetLanguageText !== null) {
-        targetLanguageText.innerHTML = ("Target Language : " + language);
+        targetLanguageText.innerHTML = "Target Language : " + language;
     }
 }
 
@@ -46,17 +45,14 @@ function createTargetLanguageList(): void {
     const dropdown = document.getElementById("dropdown");
 
     // 遍歷清單並生成相應的項目
-    for (let i = 0; i < supportedLanguages.length; i++) {
-        const supportedLanguage = supportedLanguages[i];
-        if (supportedLanguage !== undefined) {
-            const listItem = document.createElement("span");
-            listItem.textContent = supportedLanguage.language;
-            if (supportedLanguage.codes[0] !== undefined) {
-                listItem.setAttribute("id", supportedLanguage.codes[0]);
-            }
-            if (dropdown !== null) {
-                dropdown.appendChild(listItem);
-            }
+    for (const supportedLanguage of supportedLanguages) {
+        const listItem = document.createElement("span");
+        listItem.textContent = supportedLanguage.language;
+        if (supportedLanguage.codes[0] !== undefined) {
+            listItem.setAttribute("id", supportedLanguage.codes[0]);
+        }
+        if (dropdown !== null) {
+            dropdown.appendChild(listItem);
         }
     }
 }
@@ -74,13 +70,10 @@ function setLanguageOnClick(languageCode: string, language: string) {
 }
 
 function setLanguagesOnClick() {
-    for (let i = 0; i < supportedLanguages.length; i++) {
-        const supportedLanguage = supportedLanguages[i];
-        if (supportedLanguage !== undefined) {
-            const code = supportedLanguage.codes[0];
-            if (code !== undefined) {
-                setLanguageOnClick(code, supportedLanguage.language);
-            }
+    for (const supportedLanguage of supportedLanguages) {
+        const code = supportedLanguage.codes[0];
+        if (code !== undefined) {
+            setLanguageOnClick(code, supportedLanguage.language);
         }
     }
 }

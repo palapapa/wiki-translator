@@ -31,7 +31,9 @@
     "eslintConfig": {
         "extends": [
             "eslint:recommended",
-            "plugin:@typescript-eslint/recommended"
+            "plugin:@typescript-eslint/recommended",
+            "plugin:@typescript-eslint/recommended-requiring-type-checking",
+            "plugin:@typescript-eslint/strict"
         ],
         "parser": "@typescript-eslint/parser",
         "plugins": [
@@ -64,7 +66,11 @@
             "space-infix-ops": "warn",
             "new-parens": "warn",
             "new-cap": "warn",
-            "eqeqeq": ["warn", "always", { "null": "ignore" }]
+            "eqeqeq": ["warn", "always", { "null": "ignore" }],
+            "one-var": ["warn", "consecutive"],
+            "no-extra-parens": "warn",
+            "@typescript-eslint/no-misused-promises": ["warn", { "checksVoidReturn": false }],
+            "@typescript-eslint/restrict-template-expressions": ["off"]
         },
         "ignorePatterns": [
             "*",

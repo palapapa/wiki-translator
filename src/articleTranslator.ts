@@ -2,8 +2,8 @@ import { supportedLanguages } from "./googleTranslateSupportedLanguages";
 import { WikiArticle } from "./wikiArticle";
 import { TranslatedWikiArticle } from "./translatedWikiArticle";
 
-const supportedCodes = supportedLanguages.map(language => language.codes).flat(Infinity);
-const translationApiBaseUrl = new URL("https://translate.googleapis.com/translate_a/t?client=gfx&format=html");
+const supportedCodes = supportedLanguages.map(language => language.codes).flat(Infinity),
+    translationApiBaseUrl = new URL("https://translate.googleapis.com/translate_a/t?client=gfx&format=html");
 
 async function translateArticle(article: WikiArticle, targetLanguage: string, sourceLanguage = article.language): Promise<TranslatedWikiArticle> {
     if (article.document === null) {
@@ -25,8 +25,8 @@ async function translateArticle(article: WikiArticle, targetLanguage: string, so
     if (!response.ok) {
         return { language: article.language, document: null, length: 0 };
     }
-    const translatedDocuments: string[] = await response.json();
-    const translatedDocument = translatedDocuments[0];
+    const translatedDocuments: string[] = await response.json() as string[],
+        translatedDocument = translatedDocuments[0];
     if (translatedDocument !== undefined) {
         return {
             language: article.language,
@@ -45,24 +45,18 @@ async function translateArticle(article: WikiArticle, targetLanguage: string, so
  */
 export async function translateArticles(articles: WikiArticle[], targetLanguage: string): Promise<TranslatedWikiArticle[]> {
     const result: TranslatedWikiArticle[] = [], promises: Promise<TranslatedWikiArticle>[] = [];
-    for (let i = 0; i < articles.length; i++) {
-        const article = articles[i];
-        if (article !== undefined) {
-            if (!supportedCodes.includes(article.language)) {
-                result.push({ language: article.language, document: null, length: 0 });
-                continue;
-            }
-            if (article.document !== null) {
-                promises.push(translateArticle(article, targetLanguage));
-            }
+    for (const article of articles) {
+        if (!supportedCodes.includes(article.language)) {
+            result.push({ language: article.language, document: null, length: 0 });
+            continue;
+        }
+        if (article.document !== null) {
+            promises.push(translateArticle(article, targetLanguage));
         }
     }
     const translatedArticles = await Promise.all(promises);
-    for (let i = 0; i < translatedArticles.length; i++) {
-        const translatedArticle = translatedArticles[i];
-        if (translatedArticle !== undefined) {
-            result.push(translatedArticle);
-        }
+    for (const translatedArticle of translatedArticles) {
+        result.push(translatedArticle);
     }
     return result;
 }

@@ -13,9 +13,7 @@ export interface Query {
     pages?: Pages;
 }
 
-export interface Pages {
-    [key: string]: Page
-}
+export type Pages = Record<string, Page>;
 
 export interface Page {
     pageid?: number;

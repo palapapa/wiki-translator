@@ -5,8 +5,8 @@ import { WikiArticle } from "./wikiArticle";
 
 function getTitle(url: URL): string | null {
     let title: string | undefined;
-    const urlString = url.toString();
-    const titleDelimiters = ["/wiki/", "/zh-tw/", "/zh-cn/", "/zh-hk/", "/zh-mo/", "/zh-my/", "/zh-sg/"];
+    const urlString = url.toString(),
+        titleDelimiters = ["/wiki/", "/zh-tw/", "/zh-cn/", "/zh-hk/", "/zh-mo/", "/zh-my/", "/zh-sg/"];
     for (let i = 0; i < titleDelimiters.length && title === undefined; i++) {
         const delimiter = titleDelimiters[i];
         if (delimiter !== undefined) {
@@ -31,23 +31,23 @@ async function getHtml(url: URL): Promise<Document | null> {
     if (title === null) {
         return null;
     }
-    const decodedTitle = decodeURI(title); // The title is converted back to unicode before using it in fetch. Otherwise fetch would encode the already percent encoded title again
-    const params = new URLSearchParams(
-        {
-            action: "parse",
-            page: decodedTitle,
-            redirects: "",
-            format: "json",
-            origin: "*"
-        }
-    );
-    const queryUrl = getQueryUrl(url, params);
-    const response = await fetch(queryUrl);
+    const decodedTitle = decodeURI(title), // The title is converted back to unicode before using it in fetch. Otherwise fetch would encode the already percent encoded title again
+        params = new URLSearchParams(
+            {
+                action: "parse",
+                page: decodedTitle,
+                redirects: "",
+                format: "json",
+                origin: "*"
+            }
+        ),
+        queryUrl = getQueryUrl(url, params),
+        response = await fetch(queryUrl);
     if (!response.ok) {
         return null;
     }
-    const responseObject: ParseResponse = await response.json();
-    const htmlString = responseObject?.parse?.text?.["*"];
+    const responseObject: ParseResponse = await response.json() as ParseResponse,
+        htmlString = responseObject.parse?.text?.["*"];
     if (htmlString !== undefined) {
         return new DOMParser().parseFromString(htmlString, "text/html");
     }
@@ -59,26 +59,26 @@ async function getLanglinks(url: URL): Promise<Langlink[] | null> {
     if (title === null) {
         return null;
     }
-    const decodedTitle = decodeURI(title); // The title is converted back to unicode before using it in fetch. Otherwise fetch would encode the already percent encoded title again
-    const params = new URLSearchParams(
-        {
-            action: "query",
-            prop: "langlinks",
-            titles: decodedTitle,
-            llprop: "url",
-            lllimit: "max",
-            redirects: "",
-            format: "json",
-            origin: "*"
-        }
-    );
-    const queryUrl = getQueryUrl(url, params);
-    const response = await fetch(queryUrl);
+    const decodedTitle = decodeURI(title), // The title is converted back to unicode before using it in fetch. Otherwise fetch would encode the already percent encoded title again
+        params = new URLSearchParams(
+            {
+                action: "query",
+                prop: "langlinks",
+                titles: decodedTitle,
+                llprop: "url",
+                lllimit: "max",
+                redirects: "",
+                format: "json",
+                origin: "*"
+            }
+        ),
+        queryUrl = getQueryUrl(url, params),
+        response = await fetch(queryUrl);
     if (!response.ok) {
         return null;
     }
-    const responseObject: LanglinksResponse = await response.json();
-    const pages = responseObject?.query?.pages;
+    const responseObject: LanglinksResponse = await response.json() as LanglinksResponse,
+        pages = responseObject.query?.pages;
     if (pages === undefined) {
         return null;
     }
@@ -99,16 +99,15 @@ export async function fetchAllLanguages(url: URL): Promise<WikiArticle[] | null>
         return null;
     }
     const result: WikiArticle[] = [], promises: Promise<Document | null>[] = [];
-    for (let i = 0; i < langlinks.length; i++) {
-        const langlink = langlinks[i];
-        if (langlink?.url !== undefined) {
+    for (const langlink of langlinks) {
+        if (langlink.url !== undefined) {
             promises.push(getHtml(new URL(langlink.url)));
         }
     }
     const documents = await Promise.all(promises);
     for (let i = 0; i < documents.length; i++) {
-        const document = documents[i];
-        const langlink = langlinks[i];
+        const document = documents[i],
+            langlink = langlinks[i];
         if (document != null && langlink?.lang !== undefined) {
             result.push({ language: langlink.lang, document: document });
         }
