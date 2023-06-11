@@ -67,12 +67,13 @@ function dropmenuUpdateWithLanguageCode(languageCode: string): boolean {
     return true;
 }
 
-async function selectLanguage(languageCode: string): Promise<void> {
+async function selectLanguage(languageCode: string): Promise<boolean> {
     const isSuccess = dropmenuUpdateWithLanguageCode(languageCode);
     if (isSuccess) {
         selectedTargetLanguage = languageCode;
         await addTop3LanguageButtons(languageCode);
     }
+    return isSuccess;
 }
 
 // 各語言選項的點擊事件
