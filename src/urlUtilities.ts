@@ -15,3 +15,10 @@ export async function getCurrentUrl(): Promise<URL | null> {
         return null;
     }
 }
+
+export function getWikiArticleLanguage(url: URL): string | null {
+    if (!url.hostname.endsWith("wikipedia.org")) {
+        return null;
+    }
+    return url.hostname.split(".")[0] ?? null;
+}

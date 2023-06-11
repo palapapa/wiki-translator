@@ -1,11 +1,11 @@
 import { fetchAllLanguages } from "./articleFetcher";
 import { translateArticles } from "./articleTranslator";
-import { getCurrentUrl } from "./urlUtilities";
+import { getCurrentUrl, getWikiArticleLanguage } from "./urlUtilities";
 import { WikiArticle } from "./wikiArticle";
 import { supportedLanguages, getFullNameFromCode } from "./googleTranslateSupportedLanguages";
 import { TranslatedWikiArticle } from "./translatedWikiArticle";
 
-export let selectedTargetLanguage = "";
+export let selectedTargetLanguage: string | null = null;
 
 function dropmenuShow(): void {
     const dropdown = document.getElementById("dropdown");
@@ -57,15 +57,21 @@ function createTargetLanguageList(): void {
     }
 }
 
+function selectLanguage(languageCode: string): void {
+    const language = getFullNameFromCode(languageCode);
+    if (language === null) {
+        return;
+    }
+    dropmenuUpdate(language);
+    selectedTargetLanguage = languageCode;
+    console.log(`Currently selected language: ${languageCode}`);
+}
+
 // 各語言選項的點擊事件
-function setLanguageOnClick(languageCode: string, language: string) {
+function setLanguageOnClick(languageCode: string): void {
     const targetElement = document.getElementById(languageCode);
     if (targetElement !== null) {
-        targetElement.onclick = function () {
-            dropmenuUpdate(language);
-            selectedTargetLanguage = languageCode;
-            console.log(`Currently selected language: ${languageCode}`);
-        };
+        targetElement.onclick = () => selectLanguage(languageCode);
     }
 }
 
@@ -73,7 +79,7 @@ function setLanguagesOnClick() {
     for (const supportedLanguage of supportedLanguages) {
         const code = supportedLanguage.codes[0];
         if (code !== undefined) {
-            setLanguageOnClick(code, supportedLanguage.language);
+            setLanguageOnClick(code);
         }
     }
 }
@@ -96,26 +102,34 @@ window.onload = async () => {
     setLanguagesOnClick();
     const currentUrl = await getCurrentUrl();
     let wikiArticles: WikiArticle[] | null = null;
-    if (currentUrl !== null) {
-        wikiArticles = await fetchAllLanguages(currentUrl);
-        if (wikiArticles !== null) {
-            const translatedWikiArticles: TranslatedWikiArticle[] = await translateArticles(wikiArticles, "zh-TW");
-            console.log(translatedWikiArticles);
-            translatedWikiArticles.sort((a, b) => b.length - a.length);
-            const topLanguagesList = document.getElementById("topThreeItems");
-            if (topLanguagesList !== null) {
-                for (let i = 0; i < 3 && i < translatedWikiArticles.length; i++) {
-                    const translatedWikiArticle = translatedWikiArticles[i];
-                    if (translatedWikiArticle !== undefined) {
-                        if (translatedWikiArticle.document === null) {
-                            continue;
-                        }
-                        const topThreeItem = createTopThreeItem(translatedWikiArticle);
-                        topLanguagesList.appendChild(topThreeItem);
-                        document.getElementById("loadingIconCenterer")?.remove();
-                    }
-                }
+    if (currentUrl === null) {
+        return;
+    }
+    const currentLanguage = getWikiArticleLanguage(currentUrl);
+    if (currentLanguage === null) {
+        return;
+    }
+    selectLanguage(currentLanguage);
+    wikiArticles = await fetchAllLanguages(currentUrl);
+    if (wikiArticles === null) {
+        return;
+    }
+    const translatedWikiArticles: TranslatedWikiArticle[] = await translateArticles(wikiArticles, "zh-TW");
+    console.log(translatedWikiArticles);
+    translatedWikiArticles.sort((a, b) => b.length - a.length);
+    const topLanguagesList = document.getElementById("topThreeItems");
+    if (topLanguagesList === null) {
+        return;
+    }
+    for (let i = 0; i < 3 && i < translatedWikiArticles.length; i++) {
+        const translatedWikiArticle = translatedWikiArticles[i];
+        if (translatedWikiArticle !== undefined) {
+            if (translatedWikiArticle.document === null) {
+                continue;
             }
+            const topThreeItem = createTopThreeItem(translatedWikiArticle);
+            topLanguagesList.appendChild(topThreeItem);
+            document.getElementById("loadingIconCenterer")?.remove();
         }
     }
 };
