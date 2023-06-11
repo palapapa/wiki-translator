@@ -109,7 +109,7 @@ export async function fetchAllLanguages(url: URL): Promise<WikiArticle[] | null>
         const document = documents[i],
             langlink = langlinks[i];
         if (document != null && langlink?.lang !== undefined) {
-            result.push({ language: langlink.lang, document: document });
+            result.push({ languageCode: langlink.lang, document: document });
         }
     }
     return result;

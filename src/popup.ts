@@ -97,7 +97,7 @@ function createTopThreeItem(translatedWikiArticle: TranslatedWikiArticle): HTMLE
     const topThreeItem = document.createElement("div");
     topThreeItem.className = "topThreeItem";
     topThreeItem.appendChild(
-        document.createTextNode(getFullNameFromCode(translatedWikiArticle.language) ?? "<Error: Unknown Language>")
+        document.createTextNode(getFullNameFromCode(translatedWikiArticle.languageCode) ?? "<Error: Unknown Language>")
     );
     const icon = document.createElement("img");
     icon.className = "linkIcon";
@@ -106,21 +106,26 @@ function createTopThreeItem(translatedWikiArticle: TranslatedWikiArticle): HTMLE
     return topThreeItem;
 }
 
+function filterTranslatedWikiArticles(translatedWikiArticles: TranslatedWikiArticle[], currentLanguageCode: string): TranslatedWikiArticle[] {
+    const currentLanguageArticle = translatedWikiArticles.find(article => article.languageCode === currentLanguageCode);
+    if (currentLanguageArticle === undefined) {
+        return translatedWikiArticles;
+    }
+    return translatedWikiArticles.filter(article => article.length >= currentLanguageArticle.length && article.languageCode !== currentLanguageCode);
+}
+
 async function addTop3LanguageButtons(languageCode: string): Promise<void> {
     const currentUrl = await getCurrentUrl();
     let wikiArticles: WikiArticle[] | null = null;
     if (currentUrl === null) {
         return;
     }
-    const currentLanguage = getWikiArticleLanguageCode(currentUrl);
-    if (currentLanguage === null) {
-        return;
-    }
     wikiArticles = await fetchAllLanguages(currentUrl);
     if (wikiArticles === null) {
         return;
     }
-    const translatedWikiArticles: TranslatedWikiArticle[] = await translateArticles(wikiArticles, languageCode);
+    let translatedWikiArticles: TranslatedWikiArticle[] = await translateArticles(wikiArticles, languageCode);
+    translatedWikiArticles = filterTranslatedWikiArticles(translatedWikiArticles, languageCode);
     console.log(translatedWikiArticles);
     translatedWikiArticles.sort((a, b) => b.length - a.length);
     const topLanguagesList = document.getElementById("topThreeItems");
@@ -135,9 +140,9 @@ async function addTop3LanguageButtons(languageCode: string): Promise<void> {
             }
             const topThreeItem = createTopThreeItem(translatedWikiArticle);
             topLanguagesList.appendChild(topThreeItem);
-            document.getElementById("loadingIconCenterer")?.remove();
         }
     }
+    document.getElementById("loadingIconCenterer")?.remove();
 }
 
 window.onload = async () => {
