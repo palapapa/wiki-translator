@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "watch": "tsc-watch --project config/tsconfig.json --onSuccess \"webpack --mode=development --config config/webpack.config.js\"",
-        "build": "tsc --project config/tsconfig.json; webpack --mode=production --config config/webpack.config.js"
+        "build": "tsc --project config/tsconfig.json && webpack --mode=production --config config/webpack.config.js"
     },
     "devDependencies": {
         "@types/chrome": "^0.0.181",
