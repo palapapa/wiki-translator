@@ -1,6 +1,6 @@
 import { fetchAllLanguages } from "./articleFetcher";
 import { translateArticles } from "./articleTranslator";
-import { getCurrentUrl, getWikiArticleLanguageCode } from "./urlUtilities";
+import { getCurrentTabId, getCurrentUrl, getWikiArticleLanguageCode } from "./urlUtilities";
 import { WikiArticle } from "./wikiArticle";
 import { supportedLanguages, getFullNameFromCode } from "./googleTranslateSupportedLanguages";
 import { TranslatedWikiArticle } from "./translatedWikiArticle";
@@ -105,6 +105,20 @@ function createTopThreeItem(translatedWikiArticle: TranslatedWikiArticle): HTMLE
     topThreeItem.appendChild(
         document.createTextNode(getFullNameFromCode(translatedWikiArticle.languageCode) ?? "<Error: Unknown Language>")
     );
+    topThreeItem.onclick = async () => {
+        console.log(`Clicked on ${translatedWikiArticle.languageCode}`);
+        const tabId = await getCurrentTabId();
+        if (tabId === null) {
+            console.log("Tab ID not found when trying to message the content script.");
+            return;
+        }
+        const mwParserOutput = translatedWikiArticle.document?.getElementsByClassName("mw-parser-output")[0]?.innerHTML ?? null;
+        if (mwParserOutput === null) {
+            console.log("The document to replace with is null.");
+            return;
+        }
+        chrome.tabs.sendMessage<string>(tabId, mwParserOutput); // Cannot send the Document object because it's not JSON-ifiable
+    };
     const icon = document.createElement("img");
     icon.className = "linkIcon";
     icon.setAttribute("src", "../images/link.svg");

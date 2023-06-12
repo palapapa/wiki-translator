@@ -16,6 +16,11 @@ export async function getCurrentUrl(): Promise<URL | null> {
     }
 }
 
+export async function getCurrentTabId(): Promise<number | null> {
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    return tabs[0]?.id ?? null;
+}
+
 export function getWikiArticleLanguageCode(url: URL): string | null {
     if (!url.hostname.endsWith("wikipedia.org")) {
         return null;
