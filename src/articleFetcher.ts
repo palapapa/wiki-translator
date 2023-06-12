@@ -54,7 +54,7 @@ async function getHtml(url: URL): Promise<Document | null> {
     return null;
 }
 
-async function getLanglinks(url: URL): Promise<Langlink[] | null> {
+async function getLanglinks(url: URL, abortSignal: AbortSignal): Promise<Langlink[] | null> {
     const title = getTitle(url);
     if (title === null) {
         return null;
@@ -73,7 +73,7 @@ async function getLanglinks(url: URL): Promise<Langlink[] | null> {
             }
         ),
         queryUrl = getQueryUrl(url, params),
-        response = await fetch(queryUrl);
+        response = await fetch(queryUrl, { signal: abortSignal });
     if (!response.ok) {
         return null;
     }
@@ -93,8 +93,8 @@ async function getLanglinks(url: URL): Promise<Langlink[] | null> {
     return langlinks;
 }
 
-export async function fetchAllLanguages(url: URL): Promise<WikiArticle[] | null> {
-    const langlinks = await getLanglinks(url);
+export async function fetchAllLanguages(url: URL, abortSignal: AbortSignal): Promise<WikiArticle[] | null> {
+    const langlinks = await getLanglinks(url, abortSignal);
     if (langlinks === null) {
         return null;
     }

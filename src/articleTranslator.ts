@@ -5,7 +5,7 @@ import { TranslatedWikiArticle } from "./translatedWikiArticle";
 const supportedCodes = supportedLanguages.map(language => language.codes).flat(Infinity),
     translationApiBaseUrl = new URL("https://translate.googleapis.com/translate_a/t?client=gfx&format=html");
 
-async function translateArticle(article: WikiArticle, targetLanguage: string, sourceLanguage = article.languageCode): Promise<TranslatedWikiArticle> {
+async function translateArticle(article: WikiArticle, abortSignal: AbortSignal, targetLanguage: string, sourceLanguage = article.languageCode): Promise<TranslatedWikiArticle> {
     if (article.document === null) {
         return { languageCode: article.languageCode, document: null, length: 0 };
     }
@@ -19,8 +19,9 @@ async function translateArticle(article: WikiArticle, targetLanguage: string, so
             "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
-            q: article.document.documentElement.outerHTML,
-        })
+            q: article.document.documentElement.outerHTML
+        }),
+        signal: abortSignal
     });
     if (!response.ok) {
         return { languageCode: article.languageCode, document: null, length: 0 };
@@ -43,7 +44,7 @@ async function translateArticle(article: WikiArticle, targetLanguage: string, so
  * @returns {Promise<WikiArticle[]>} An array of translated {@link WikiArticle}s. If {@link WikiArticle.languageCode} isn't a supported
  * language by Google, {@link WikiArticle.document} will be null and {@link WikiArticle.langth} will be 0.
  */
-export async function translateArticles(articles: WikiArticle[], targetLanguage: string): Promise<TranslatedWikiArticle[]> {
+export async function translateArticles(articles: WikiArticle[], targetLanguage: string, abortSignal: AbortSignal): Promise<TranslatedWikiArticle[]> {
     const result: TranslatedWikiArticle[] = [], promises: Promise<TranslatedWikiArticle>[] = [];
     for (const article of articles) {
         if (!supportedCodes.includes(article.languageCode)) {
@@ -51,7 +52,7 @@ export async function translateArticles(articles: WikiArticle[], targetLanguage:
             continue;
         }
         if (article.document !== null) {
-            promises.push(translateArticle(article, targetLanguage));
+            promises.push(translateArticle(article, abortSignal, targetLanguage));
         }
     }
     const translatedArticles = await Promise.all(promises);

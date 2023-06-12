@@ -7,6 +7,8 @@ import { TranslatedWikiArticle } from "./translatedWikiArticle";
 
 export let selectedTargetLanguage: string | null = null;
 
+let topLanguagesListAbortController = new AbortController();
+
 function dropmenuShow(): void {
     const dropdown = document.getElementById("dropdown");
     if (dropdown !== null) {
@@ -67,11 +69,11 @@ function dropmenuUpdateWithLanguageCode(languageCode: string): boolean {
     return true;
 }
 
-async function selectLanguage(languageCode: string): Promise<boolean> {
+async function selectLanguage(languageCode: string, abortSignal: AbortSignal): Promise<boolean> {
     const isSuccess = dropmenuUpdateWithLanguageCode(languageCode);
     if (isSuccess) {
         selectedTargetLanguage = languageCode;
-        await addTop3LanguageButtons(languageCode);
+        await addTop3LanguageButtons(languageCode, abortSignal);
     }
     return isSuccess;
 }
@@ -80,7 +82,11 @@ async function selectLanguage(languageCode: string): Promise<boolean> {
 function setLanguageOnClick(languageCode: string): void {
     const targetElement = document.getElementById(languageCode);
     if (targetElement !== null) {
-        targetElement.onclick = () => selectLanguage(languageCode);
+        targetElement.onclick = async () => {
+            topLanguagesListAbortController.abort();
+            topLanguagesListAbortController = new AbortController();
+            await selectLanguage(languageCode, topLanguagesListAbortController.signal);
+        };
     }
 }
 
@@ -114,7 +120,8 @@ function filterTranslatedWikiArticles(translatedWikiArticles: TranslatedWikiArti
     return translatedWikiArticles.filter(article => article.length >= currentLanguageArticle.length && article.languageCode !== currentLanguageCode);
 }
 
-async function addTop3LanguageButtons(languageCode: string): Promise<void> {
+async function addTop3LanguageButtons(languageCode: string, abortSignal: AbortSignal): Promise<void> {
+    let aborted = false;
     try {
         const topLanguagesList = document.getElementById("topThreeItems");
         if (topLanguagesList === null) {
@@ -127,16 +134,40 @@ async function addTop3LanguageButtons(languageCode: string): Promise<void> {
         }
         const loadingIconDiv = loadingIcon.content.cloneNode(true);
         topLanguagesList.appendChild(loadingIconDiv);
+        console.log(topLanguagesList.innerHTML);
         const currentUrl = await getCurrentUrl();
         let wikiArticles: WikiArticle[] | null = null;
         if (currentUrl === null) {
             return;
         }
-        wikiArticles = await fetchAllLanguages(currentUrl);
+        try {
+            wikiArticles = await fetchAllLanguages(currentUrl, abortSignal);
+        }
+        catch (e) {
+            if ((e as DOMException).name === "AbortError") {
+                aborted = true;
+                return;
+            }
+            else {
+                throw e;
+            }
+        }
         if (wikiArticles === null) {
             return;
         }
-        let translatedWikiArticles: TranslatedWikiArticle[] = await translateArticles(wikiArticles, languageCode);
+        let translatedWikiArticles: TranslatedWikiArticle[] = [];
+        try {
+            translatedWikiArticles = await translateArticles(wikiArticles, languageCode, abortSignal);
+        }
+        catch (e) {
+            if ((e as DOMException).name === "AbortError") {
+                aborted = true;
+                return;
+            }
+            else {
+                throw e;
+            }
+        }
         translatedWikiArticles = filterTranslatedWikiArticles(translatedWikiArticles, languageCode);
         console.log(translatedWikiArticles);
         translatedWikiArticles.sort((a, b) => b.length - a.length);
@@ -152,7 +183,9 @@ async function addTop3LanguageButtons(languageCode: string): Promise<void> {
         }
     }
     finally {
-        document.getElementById("loadingIconCenterer")?.remove();
+        if (!aborted) {
+            document.getElementById("loadingIconCenterer")?.remove();
+        }
     }
 }
 
@@ -167,5 +200,5 @@ window.onload = async () => {
     if (currentLanguage === null) {
         return;
     }
-    await selectLanguage(currentLanguage);
+    await selectLanguage(currentLanguage, topLanguagesListAbortController.signal);
 };
