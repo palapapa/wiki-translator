@@ -115,34 +115,44 @@ function filterTranslatedWikiArticles(translatedWikiArticles: TranslatedWikiArti
 }
 
 async function addTop3LanguageButtons(languageCode: string): Promise<void> {
-    const currentUrl = await getCurrentUrl();
-    let wikiArticles: WikiArticle[] | null = null;
-    if (currentUrl === null) {
-        return;
-    }
-    wikiArticles = await fetchAllLanguages(currentUrl);
-    if (wikiArticles === null) {
-        return;
-    }
-    let translatedWikiArticles: TranslatedWikiArticle[] = await translateArticles(wikiArticles, languageCode);
-    translatedWikiArticles = filterTranslatedWikiArticles(translatedWikiArticles, languageCode);
-    console.log(translatedWikiArticles);
-    translatedWikiArticles.sort((a, b) => b.length - a.length);
-    const topLanguagesList = document.getElementById("topThreeItems");
-    if (topLanguagesList === null) {
-        return;
-    }
-    for (let i = 0; i < 3 && i < translatedWikiArticles.length; i++) {
-        const translatedWikiArticle = translatedWikiArticles[i];
-        if (translatedWikiArticle !== undefined) {
-            if (translatedWikiArticle.document === null) {
-                continue;
+    try {
+        const loadingIcon: HTMLTemplateElement | null = document.getElementById("loadingIconTemplate") as HTMLTemplateElement | null;
+        if (loadingIcon === null) {
+            return;
+        }
+        const loadingIconDiv = loadingIcon.content.cloneNode(true);
+        document.getElementById("topThreeItems")?.appendChild(loadingIconDiv);
+        const currentUrl = await getCurrentUrl();
+        let wikiArticles: WikiArticle[] | null = null;
+        if (currentUrl === null) {
+            return;
+        }
+        wikiArticles = await fetchAllLanguages(currentUrl);
+        if (wikiArticles === null) {
+            return;
+        }
+        let translatedWikiArticles: TranslatedWikiArticle[] = await translateArticles(wikiArticles, languageCode);
+        translatedWikiArticles = filterTranslatedWikiArticles(translatedWikiArticles, languageCode);
+        console.log(translatedWikiArticles);
+        translatedWikiArticles.sort((a, b) => b.length - a.length);
+        const topLanguagesList = document.getElementById("topThreeItems");
+        if (topLanguagesList === null) {
+            return;
+        }
+        for (let i = 0; i < 3 && i < translatedWikiArticles.length; i++) {
+            const translatedWikiArticle = translatedWikiArticles[i];
+            if (translatedWikiArticle !== undefined) {
+                if (translatedWikiArticle.document === null) {
+                    continue;
+                }
+                const topThreeItem = createTopThreeItem(translatedWikiArticle);
+                topLanguagesList.appendChild(topThreeItem);
             }
-            const topThreeItem = createTopThreeItem(translatedWikiArticle);
-            topLanguagesList.appendChild(topThreeItem);
         }
     }
-    document.getElementById("loadingIconCenterer")?.remove();
+    finally {
+        document.getElementById("loadingIconCenterer")?.remove();
+    }
 }
 
 window.onload = async () => {
