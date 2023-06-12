@@ -116,12 +116,17 @@ function filterTranslatedWikiArticles(translatedWikiArticles: TranslatedWikiArti
 
 async function addTop3LanguageButtons(languageCode: string): Promise<void> {
     try {
+        const topLanguagesList = document.getElementById("topThreeItems");
+        if (topLanguagesList === null) {
+            return;
+        }
+        topLanguagesList.textContent = "";
         const loadingIcon: HTMLTemplateElement | null = document.getElementById("loadingIconTemplate") as HTMLTemplateElement | null;
         if (loadingIcon === null) {
             return;
         }
         const loadingIconDiv = loadingIcon.content.cloneNode(true);
-        document.getElementById("topThreeItems")?.appendChild(loadingIconDiv);
+        topLanguagesList.appendChild(loadingIconDiv);
         const currentUrl = await getCurrentUrl();
         let wikiArticles: WikiArticle[] | null = null;
         if (currentUrl === null) {
@@ -135,10 +140,6 @@ async function addTop3LanguageButtons(languageCode: string): Promise<void> {
         translatedWikiArticles = filterTranslatedWikiArticles(translatedWikiArticles, languageCode);
         console.log(translatedWikiArticles);
         translatedWikiArticles.sort((a, b) => b.length - a.length);
-        const topLanguagesList = document.getElementById("topThreeItems");
-        if (topLanguagesList === null) {
-            return;
-        }
         for (let i = 0; i < 3 && i < translatedWikiArticles.length; i++) {
             const translatedWikiArticle = translatedWikiArticles[i];
             if (translatedWikiArticle !== undefined) {
