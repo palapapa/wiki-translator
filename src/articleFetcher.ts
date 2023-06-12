@@ -3,7 +3,7 @@ import { ParseResponse } from "./parseResponseTypes";
 import { getWikiArticleLanguageCode } from "./urlUtilities";
 import { WikiArticle } from "./wikiArticle";
 
-function getTitle(url: URL): string | null {
+export function getTitle(url: URL): string | null {
     let title: string | undefined;
     const urlString = url.toString(),
         titleDelimiters = ["/wiki/", "/zh-tw/", "/zh-cn/", "/zh-hk/", "/zh-mo/", "/zh-my/", "/zh-sg/"];
@@ -19,7 +19,7 @@ function getTitle(url: URL): string | null {
     return title.split("#")[0] ?? null; // Removes possible hash
 }
 
-function getQueryUrl(url: URL, params: URLSearchParams): URL {
+export function getQueryUrl(url: URL, params: URLSearchParams): URL {
     const queryUrl = new URL(url);
     queryUrl.pathname = "/w/api.php";
     queryUrl.search = params.toString();

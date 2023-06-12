@@ -148,7 +148,6 @@ async function addTop3LanguageButtons(languageCode: string, abortSignal: AbortSi
         }
         const loadingIconDiv = loadingIcon.content.cloneNode(true);
         topLanguagesList.appendChild(loadingIconDiv);
-        console.log(topLanguagesList.innerHTML);
         const currentUrl = await getCurrentUrl();
         let wikiArticles: WikiArticle[] | null = null;
         if (currentUrl === null) {

@@ -21,6 +21,7 @@ export interface Parse {
     displaytitle?: string;
     iwlinks?: Iwlink[];
     properties?: Property[];
+    modulestyles?: string[];
 }
 
 export interface Property {
