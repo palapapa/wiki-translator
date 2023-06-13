@@ -4,6 +4,7 @@ import { getCurrentTabId, getCurrentUrl, getWikiArticleLanguageCode } from "./ur
 import { WikiArticle } from "./wikiArticle";
 import { supportedLanguages, getFullNameFromCode } from "./googleTranslateSupportedLanguages";
 import { TranslatedWikiArticle } from "./translatedWikiArticle";
+import { TranslationReplacerMessage } from "./translationReplacer";
 
 export let selectedTargetLanguage: string | null = null;
 
@@ -117,7 +118,10 @@ function createTopThreeItem(translatedWikiArticle: TranslatedWikiArticle): HTMLE
             console.log("The document to replace with is null.");
             return;
         }
-        chrome.tabs.sendMessage<string>(tabId, mwParserOutput); // Cannot send the Document object because it's not JSON-ifiable
+        await chrome.tabs.update({ url: translatedWikiArticle.sourceUrl.toString() });
+        setTimeout(() => {
+            chrome.tabs.sendMessage<TranslationReplacerMessage>(tabId, { html: mwParserOutput, sourceUrl: translatedWikiArticle.sourceUrl.toString() }); // Cannot send the Document object because it's not JSON-ifiable
+        }, 5000);
     };
     const icon = document.createElement("img");
     icon.className = "linkIcon";
@@ -202,7 +206,7 @@ async function addTop3LanguageButtons(languageCode: string, abortSignal: AbortSi
     }
 }
 
-window.onload = async () => {
+onload = async () => {
     createTargetLanguageList();
     setLanguagesOnClick();
     const currentUrl = await getCurrentUrl();

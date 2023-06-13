@@ -75,7 +75,10 @@
             "semi-spacing": "warn",
             "no-whitespace-before-property": "warn",
             "no-multi-spaces": "warn",
-            "no-trailing-spaces": "warn"
+            "no-trailing-spaces": "warn",
+            "prefer-spread": "warn",
+            "prefer-object-spread": "warn",
+            "rest-spread-spacing": "warn"
         },
         "ignorePatterns": [
             "*",

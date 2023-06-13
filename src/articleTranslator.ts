@@ -7,7 +7,7 @@ const supportedCodes = supportedLanguages.map(language => language.codes).flat(I
 
 async function translateArticle(article: WikiArticle, abortSignal: AbortSignal, targetLanguage: string, sourceLanguage = article.languageCode): Promise<TranslatedWikiArticle> {
     if (article.document === null) {
-        return { languageCode: article.languageCode, document: null, length: 0 };
+        return { ...article, length: 0 };
     }
     // The API url without the sl and tl parameters
     const translationApiUrl = new URL(translationApiBaseUrl);
@@ -24,19 +24,19 @@ async function translateArticle(article: WikiArticle, abortSignal: AbortSignal, 
         signal: abortSignal
     });
     if (!response.ok) {
-        return { languageCode: article.languageCode, document: null, length: 0 };
+        return { ...article, document: null, length: 0 };
     }
     const translatedDocuments: string[] = await response.json() as string[],
         translatedDocument = translatedDocuments[0];
     if (translatedDocument !== undefined) {
         return {
-            languageCode: article.languageCode,
+            ...article,
             document: new DOMParser().parseFromString(translatedDocument, "text/html"),
-            length: translatedDocument.length,
+            length: translatedDocument.length
         };
     }
     else {
-        return { languageCode: article.languageCode, document: null, length: 0 };
+        return { ...article, document: null, length: 0 };
     }
 }
 
@@ -48,7 +48,7 @@ export async function translateArticles(articles: WikiArticle[], targetLanguage:
     const result: TranslatedWikiArticle[] = [], promises: Promise<TranslatedWikiArticle>[] = [];
     for (const article of articles) {
         if (!supportedCodes.includes(article.languageCode)) {
-            result.push({ languageCode: article.languageCode, document: null, length: 0 });
+            result.push({ ...article, document: null, length: 0 });
             continue;
         }
         if (article.document !== null) {

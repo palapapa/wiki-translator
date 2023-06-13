@@ -108,8 +108,8 @@ export async function fetchAllLanguages(url: URL, abortSignal: AbortSignal): Pro
     for (let i = 0; i < documents.length; i++) {
         const document = documents[i],
             langlink = langlinks[i];
-        if (document != null && langlink?.lang !== undefined) {
-            result.push({ languageCode: langlink.lang, document: document });
+        if (document != null && langlink?.lang !== undefined && langlink.url !== undefined) {
+            result.push({ languageCode: langlink.lang, document: document, sourceUrl: new URL(langlink.url) });
         }
     }
     return result;
