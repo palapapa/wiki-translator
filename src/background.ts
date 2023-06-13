@@ -35,14 +35,14 @@ chrome.declarativeContent.onPageChanged.removeRules
 async function checkIfOnWikipedia(): Promise<void> {
     const url = await getCurrentUrl();
     console.log(`Current URL: ${url}`);
-    if (url != null) {
+    if (url !== null) {
         const hostname = url.hostname.toString();
-        if (hostname.substring(hostname.indexOf(".") + 1) == "wikipedia.org") {
-            chrome.action.enable();
+        if (hostname.substring(hostname.indexOf(".") + 1) === "wikipedia.org") {
+            await chrome.action.enable();
             console.log(url.hostname.toString(), "Enabled");
         }
         else {
-            chrome.action.disable();
+            await chrome.action.disable();
             console.log(url.hostname.toString(), "Disabled");
         }
     }

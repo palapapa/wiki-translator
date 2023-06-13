@@ -1,76 +1,89 @@
 export interface ParseResponse {
-    parse: Parse;
+    error?: Error;
+    servedby?: string;
+    parse?: Parse;
 }
 
 export interface Parse {
-    title: string;
-    pageid: number;
-    revid: number;
-    redirects: string[];
-    text: Text;
-    langlinks: Langlink[];
-    categories: Category[];
-    links: Link[];
-    templates: Template[];
-    images: string[];
-    externallinks: string[];
-    sections: Section[];
-    showtoc: string;
-    parsewarnings: string[];
-    displaytitle: string;
-    iwlinks: Iwlink[];
-    properties: Property[];
+    title?: string;
+    pageid?: number;
+    revid?: number;
+    redirects?: Redirect[];
+    text?: Text;
+    langlinks?: Langlink[];
+    categories?: Category[];
+    links?: Link[];
+    templates?: Template[];
+    images?: string[];
+    externallinks?: string[];
+    sections?: Section[];
+    parsewarnings?: string[];
+    displaytitle?: string;
+    iwlinks?: Iwlink[];
+    properties?: Property[];
+    modulestyles?: string[];
 }
 
 export interface Property {
-    name: string;
-    "*": string;
+    name?: string;
+    "*"?: string;
 }
 
 export interface Iwlink {
-    prefix: string;
-    url: string;
-    "*": string;
+    prefix?: string;
+    url?: string;
+    "*"?: string;
 }
 
 export interface Section {
-    toclevel: number;
-    level: string;
-    line: string;
-    number: string;
-    index: string;
-    fromtitle: string;
-    byteoffset: number;
-    anchor: string;
-    linkAnchor: string;
+    toclevel?: number;
+    level?: string;
+    line?: string;
+    number?: string;
+    index?: string;
+    fromtitle?: string;
+    byteoffset?: number;
+    anchor?: string;
+    linkAnchor?: string;
 }
 
 export interface Template {
-    ns: number;
-    exists: string;
-    "*": string;
+    ns?: number;
+    exists?: string;
+    "*"?: string;
 }
 
 export interface Link {
-    ns: number;
+    ns?: number;
     exists?: string;
-    "*": string;
+    "*"?: string;
 }
 
 export interface Category {
-    sortkey: string;
+    sortkey?: string;
     hidden?: string;
-    "*": string;
+    "*"?: string;
 }
 
 export interface Langlink {
-    lang: string;
-    url: string;
-    langname: string;
-    autonym: string;
-    "*": string;
+    lang?: string;
+    url?: string;
+    langname?: string;
+    autonym?: string;
+    "*"?: string;
 }
 
 export interface Text {
-    "*": string;
+    "*"?: string;
+}
+
+export interface Redirect {
+    from?: string;
+    to?: string;
+}
+
+export interface Error {
+    code?: string;
+    info?: string;
+    "*"?: string;
 }

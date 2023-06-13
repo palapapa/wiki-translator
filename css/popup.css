@@ -4,9 +4,8 @@
 }
 
 body {
-    min-width: 300px;
-    min-height: 300px;
     font-family: Arial;
+    min-height: 300px;
 }
 
 p {
@@ -21,8 +20,6 @@ p {
     margin-bottom: -20px;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: -5px;
-    padding-bottom: -5px;
     font-size: 17px;
     font-family: "LinLibertine_R";
 }
@@ -59,7 +56,7 @@ p {
 
 #coverDropButton {
     position: absolute;
-    /* 當元素的position設定absolute後，它就會往外層的元素找是否有position:relative | absolute | fixed | inherit(若繼承的是前面3個之一)的元素，若是都沒有，就會以該網頁頁面(<body>)的左上角為定位點。 */
+    /* 當元素的position設定absolute後，它就會往外層的元素找是否有position:relative | absolute | fixed | sticky | inherit(若繼承的是前面4個之一)的元素，若是都沒有，就會以該網頁頁面(<body>)的左上角為定位點。 */
     width: 100%;
     height: 100%;
     background-color: rgba(10, 10, 10, 0);
@@ -71,7 +68,6 @@ p {
 /* language.svg */
 .languageIcon {
     vertical-align: text-bottom;
-    background-image: url(../images/language.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 20px;
@@ -79,14 +75,13 @@ p {
 }
 
 .dropButton:active .languageIcon {
-    background-image: url(../images/languageActive.svg);
+    filter: brightness(0) invert(1);
 }
 
 /* arrowDown.svg */
 .arrowDownIcon {
     align-self: center;
     margin-left: auto;
-    background-image: url(../images/arrowDown.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 15px;
@@ -94,7 +89,7 @@ p {
 }
 
 .dropButton:active .arrowDownIcon {
-    background-image: url(../images/arrowDownActive.svg);
+    filter: brightness(0) invert(1);
 }
 
 #targetLanguageButton {
@@ -107,16 +102,7 @@ p {
 }
 
 #targetLanguageButton:target {
-    /* box-shadow: 0 3px #324a88;
-    */
     background-size: 100% 0.3em;
-}
-
-#auto {
-    border: 1px solid #3366cc;
-    border-left: none;
-    border-right: none;
-    border-top: none;
 }
 
 .dropdownContent {
@@ -124,6 +110,9 @@ p {
     position: absolute;
     background-color: #fcfcfc;
     width: 300px;
+    height: 200px;
+    overflow-x: hidden;
+    overflow-y: scroll;
     overflow: auto;
     font-weight: bold;
     text-indent: 15px;
@@ -146,13 +135,11 @@ p {
     display: block;
 }
 
-.topLanguage {
+#topLanguages {
     width: 300px;
-    height: auto;
     margin: 0px;
     padding: 10px;
     padding-top: 0px;
-    height: auto;
     position: relative;
 }
 
@@ -166,13 +153,16 @@ p {
     font-size: 15px;
 }
 
-.topThreeItem {
+#topThreeItems {
     display: flex;
-    height: auto;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.topThreeItem {
     background-color: white;
     color: #3366cc;
     padding: 10px;
-    margin-bottom: 10px;
     text-align: left;
     text-indent: 25px;
     font-weight: 600;
@@ -193,15 +183,15 @@ p {
 .linkIcon {
     vertical-align: text-bottom;
     margin-left: auto;
-    background-image: url(../images/link.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 15px;
     height: 15px;
+    float: right;
 }
 
 .topThreeItem:active .linkIcon {
-    background-image: url(../images/linkActive.svg);
+    filter: brightness(0) invert(1);
 }
 
 .button {
@@ -270,4 +260,21 @@ p {
     justify-content: center;
     text-align: center;
     margin: 0px;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+#loadingIconCenterer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#loadingIcon {
+    width: 30px;
+    height: 30px;
 }

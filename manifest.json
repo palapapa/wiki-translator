@@ -13,5 +13,14 @@
     "background": {
         "service_worker": "dist/background.js",
         "type": "module"
-    }
+    },
+    "host_permissions": [
+        "https://translate.googleapis.com/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["https://*.wikipedia.org/*"],
+            "js": ["dist/translationReplacer.js"]
+        }
+    ]
 }

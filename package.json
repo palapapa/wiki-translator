@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "watch": "tsc-watch --project config/tsconfig.json --onSuccess \"webpack --mode=development --config config/webpack.config.js\"",
-        "build": "tsc --project config/tsconfig.json; webpack --mode=production --config config/webpack.config.js"
+        "build": "tsc --project config/tsconfig.json && webpack --mode=production --config config/webpack.config.js"
     },
     "devDependencies": {
         "@types/chrome": "^0.0.181",
@@ -31,7 +31,9 @@
     "eslintConfig": {
         "extends": [
             "eslint:recommended",
-            "plugin:@typescript-eslint/recommended"
+            "plugin:@typescript-eslint/recommended",
+            "plugin:@typescript-eslint/recommended-requiring-type-checking",
+            "plugin:@typescript-eslint/strict"
         ],
         "parser": "@typescript-eslint/parser",
         "plugins": [
@@ -61,7 +63,22 @@
             "indent": "warn",
             "quotes": "off",
             "@typescript-eslint/quotes": "warn",
-            "space-infix-ops": "warn"
+            "space-infix-ops": "warn",
+            "new-parens": "warn",
+            "new-cap": "warn",
+            "eqeqeq": ["warn", "always", { "null": "ignore" }],
+            "one-var": ["warn", "consecutive"],
+            "no-extra-parens": "off",
+            "@typescript-eslint/no-extra-parens": "warn",
+            "@typescript-eslint/no-misused-promises": ["warn", { "checksVoidReturn": false }],
+            "@typescript-eslint/restrict-template-expressions": ["off"],
+            "semi-spacing": "warn",
+            "no-whitespace-before-property": "warn",
+            "no-multi-spaces": "warn",
+            "no-trailing-spaces": "warn",
+            "prefer-spread": "warn",
+            "prefer-object-spread": "warn",
+            "rest-spread-spacing": "warn"
         },
         "ignorePatterns": [
             "*",

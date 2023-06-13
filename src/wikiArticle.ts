@@ -1,4 +1,5 @@
 export interface WikiArticle {
-    language: string;
-    document: Document;
+    languageCode: string;
+    document: Document | null;
+    sourceUrl: URL;
 }
